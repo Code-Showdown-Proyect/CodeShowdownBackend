@@ -17,7 +17,7 @@ class SQLAlchemyUserRepository(UserRepository):
                 id=user_record.id,
                 username=user_record.username,
                 email=user_record.email,
-                hashed_password=user_record.hashed_password,
+                password=user_record.password,
                 role=user_record.role,
                 created_at=user_record.created_at
             )
@@ -27,7 +27,7 @@ class SQLAlchemyUserRepository(UserRepository):
         user_model = UserModel(
             username=user.username,
             email=user.email,
-            hashed_password=user.hashed_password,
+            password=user.password,
             role=user.role,
             created_at=user.created_at
         )

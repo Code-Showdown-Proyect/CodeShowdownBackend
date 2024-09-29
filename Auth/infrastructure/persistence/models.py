@@ -11,6 +11,6 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
+    password = Column(String, nullable=False)
     role = Column(String, default='basic', nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
