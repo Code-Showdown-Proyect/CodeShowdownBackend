@@ -4,20 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Auth/application/commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/application/handlers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/application/services.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/domain/entities.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/domain/events.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/domain/repositories.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/domain/value_objects.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/infrastructure/persistence/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/infrastructure/repositories/user_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/infrastructure/security/jwt_provider.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/infrastructure/security/password_hasher.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Auth/interfaces/http/auth_controller.py" afterDir="false" />
+    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="Se crearon las clases para el contexto de Auth">
+      <change afterPath="$PROJECT_DIR$/Auth/infrastructure/persistence/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/domain/entities.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/domain/entities.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/domain/events.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/domain/events.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/domain/repositories.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/domain/repositories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/domain/value_objects.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/domain/value_objects.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/infrastructure/persistence/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/infrastructure/persistence/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auth/infrastructure/repositories/user_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/infrastructure/repositories/user_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +57,7 @@
   "keyToString": {
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "FastAPI.fastApiProject.executor": "Run",
+    "Python.main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
@@ -116,15 +113,37 @@
       <workItem from="1727112004006" duration="202000" />
       <workItem from="1727125296043" duration="908000" />
       <workItem from="1727630604314" duration="167000" />
-      <workItem from="1727644293238" duration="1397000" />
+      <workItem from="1727644293238" duration="3983000" />
     </task>
+    <task id="LOCAL-00001" summary="Se crearon las clases para el contexto de Auth">
+      <option name="closed" value="true" />
+      <created>1727646035042</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727646035042</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Se crearon las clases para el contexto de Auth">
+      <option name="closed" value="true" />
+      <created>1727646256851</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727646256851</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Se crearon las clases para el contexto de Auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se crearon las clases para el contexto de Auth" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727648408734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727644298494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727646197609" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
