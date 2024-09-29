@@ -1,0 +1,1 @@
+# Definición de Value Objects como Email y Password.

@@ -1,0 +1,1 @@
+# Interfaces para la persistencia, como UserRepository.

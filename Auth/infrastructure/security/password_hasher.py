@@ -1,0 +1,1 @@
+# Lógica para cifrar y verificar contraseñas.

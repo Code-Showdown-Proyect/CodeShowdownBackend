@@ -1,0 +1,1 @@
+# Definición de los eventos de dominio (e.g., UserRegistered).

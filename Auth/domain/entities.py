@@ -1,0 +1,1 @@
+# Definición de la entidad User.
