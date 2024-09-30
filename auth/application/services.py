@@ -25,7 +25,7 @@ class AuthService:
 
     def authenticate_user(self, email: Email, password: str) -> Optional[User]:
         user = self.user_repository.find_by_email(email)
-        if user and self.verify_password(password, user.hashed_password):
+        if user and self.verify_password(password, user.password):
             return user
         return None
 
@@ -47,9 +47,8 @@ class AuthService:
             id=None,
             username=username,
             email=email,
-            hashed_password= hashed_password,
+            password= hashed_password,
             role="basic",
-            created_at=datetime.utcnow()
         )
 
         self.user_repository.create(new_user)

@@ -8,6 +8,7 @@ class RegisterUserCommand:
     username: str
     email: str
     password: str
+    role: str
 
 @dataclass
 class AuthenticateUserCommand:

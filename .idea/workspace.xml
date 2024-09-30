@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="Se crearon las clases para el contexto de Auth">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Auth/application/commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/application/commands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Auth/application/handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/application/handlers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Auth/application/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auth/application/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/application/commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/application/commands.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/application/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/application/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth/interfaces/http/auth_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/interfaces/http/auth_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +62,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -152,10 +151,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="Se crearon las clases para el contexto de Auth" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727653108263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$user_repository.coverage" NAME="user_repository Coverage Results" MODIFIED="1727651474330" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/infrastructure/repositories" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727657917551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$contraseña.coverage" NAME="contraseña Coverage Results" MODIFIED="1727653915852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/application" />
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727646197609" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727653108263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$user_repository.coverage" NAME="user_repository Coverage Results" MODIFIED="1727651474330" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/infrastructure/repositories" />
   </component>
 </project>
