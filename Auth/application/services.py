@@ -1,1 +1,0 @@
-# Lógica de negocio relacionada con la autenticación y registro.

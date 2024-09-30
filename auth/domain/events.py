@@ -12,4 +12,4 @@ class UserRegistered:
     timestamp: datetime
 
 
-tools.display_dataframe_to_user(name="Auth Domain Folder Structure", dataframe=None)
+tools.display_dataframe_to_user(name="auth Domain Folder Structure", dataframe=None)

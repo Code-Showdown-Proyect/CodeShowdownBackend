@@ -1,1 +1,0 @@
-# Definición de comandos que se pueden ejecutar, como RegisterUserCommand.

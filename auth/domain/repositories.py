@@ -2,8 +2,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from Auth.domain.entities import User
-from Auth.domain.value_objects import Email
+from auth.domain.entities import User
+from auth.domain.value_objects import Email
 
 
 class UserRepository(ABC):

@@ -1,10 +1,10 @@
 # Implementación del UserRepository, que interactúa con la base de datos.
 # auth/infrastructure/repositories/user_repository.py
 from sqlalchemy.orm import Session
-from Auth.domain.repositories import UserRepository
-from Auth.domain.entities import User
-from Auth.domain.value_objects import Email
-from Auth.infrastructure.persistence.models import UserModel
+from auth.domain.repositories import UserRepository
+from auth.domain.entities import User
+from auth.domain.value_objects import Email
+from auth.infrastructure.persistence.models import UserModel
 
 class SQLAlchemyUserRepository(UserRepository):
     def __init__(self, session: Session):

@@ -9,11 +9,11 @@ async def say_hello(name: str):
 from datetime import datetime
 import asyncio
 
-"""
-from Auth.domain.entities import User
-from Auth.domain.value_objects import Email
-from Auth.infrastructure.persistence.database import init_db, SessionLocal
-from Auth.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
+
+"""from auth.domain.entities import User
+from auth.domain.value_objects import Email
+from auth.infrastructure.persistence.database import init_db, SessionLocal
+from auth.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
 
 
 def main():
@@ -38,5 +38,15 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-    """
+    main()"""
+from fastapi import FastAPI
+from auth.interfaces.http.auth_controller import router as auth_router
+
+app = FastAPI()
+
+# Incluir las rutas de autenticación en la aplicación
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

@@ -17,5 +17,5 @@ SessionLocal = sessionmaker(
 
 # Función para inicializar la base de datos
 def init_db():
-    from Auth.infrastructure.persistence.models import Base
+    from auth.infrastructure.persistence.models import Base
     Base.metadata.create_all(bind=engine)
