@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic.v1 import BaseModel
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from auth.infrastructure.persistence.database import SessionLocal
@@ -35,10 +35,12 @@ def get_challenge_service(db: Session = Depends(get_db)):
     return ChallengeService(challenge_repository)
 
 # Endpoint para generar un nuevo reto
+from fastapi import APIRouter, Depends, HTTPException, status, Body
+
 @router.post("/generate-challenge", response_model=ChallengeResponse)
-def generate_challenge(request: GenerateChallengeRequest, service: ChallengeService = Depends(get_challenge_service)):
+def generate_challenge(generate_request: GenerateChallengeRequest = Body(...), service: ChallengeService = Depends(get_challenge_service)):
     try:
-        command = GenerateChallengeCommand(difficulty=request.difficulty, topic=request.topic)
+        command = GenerateChallengeCommand(difficulty=generate_request.difficulty, topic=generate_request.topic)
         handler = GenerateChallengeHandler(service)
         challenge = handler.handle(command)
         return {
@@ -82,7 +84,7 @@ def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_cha
             "description": challenge.description,
             "difficulty": challenge.difficulty,
             "tags": challenge.tags,
-            "output_example": challenge.output_example
+            "output_example": challenge.output
         }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

@@ -27,7 +27,7 @@ class SQLAlchemyChallengeRepository(ChallengeRepository):
             description=challenge.description,
             difficulty=challenge.difficulty,
             tags=challenge.tags,
-            output_example=challenge.output_example
+            output_example=challenge.output
         )
         self.session.add(challenge_model)
         self.session.commit()

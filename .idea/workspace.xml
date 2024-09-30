@@ -5,24 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: files for challenge context created">
-      <change afterPath="$PROJECT_DIR$/challenge/domain/entities/challenge.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/challenge/domain/repositories/challenge_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/challenge/domain/value_objects/challenge_id.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/application/commands/generate_challenge_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/commands/generate_challenge_command.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/application/handlers/generate_challenge_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/handlers/generate_challenge_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/application/services/challenge_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/services/challenge_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/domain/entities/challenge.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/domain/repositories/challenge_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/domain/value_objects/challenge_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/infraestructure/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/infraestructure/external/chatgpt_api.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/infraestructure/persistence/challenge_repository.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/infraestructure/persistence/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/interfaces/rest/challenge_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/security/authorization.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/security/authorization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge generation/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +63,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.editor",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -192,7 +179,7 @@
     <option name="LAST_COMMIT_MESSAGE" value="feat: files for challenge context created" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727668919179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727727502630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$contraseña.coverage" NAME="contraseña Coverage Results" MODIFIED="1727653915852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/application" />
     <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727653108263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

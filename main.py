@@ -41,12 +41,13 @@ if __name__ == '__main__':
     main()"""
 from fastapi import FastAPI
 from auth.interfaces.http.auth_controller import router as auth_router
+from challenge.interfaces.rest.challenge_controller import router as challenge_router
 
 app = FastAPI()
 
 # Incluir las rutas de autenticación en la aplicación
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-
+app.include_router(challenge_router, prefix="/challenges", tags=["challenges"])
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
