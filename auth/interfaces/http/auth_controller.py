@@ -29,6 +29,10 @@ class UpdateUsernameRequest(BaseModel):
     email: str
     new_username: str
 
+class DeleteUserRequest(BaseModel):
+    email: str
+    password: str
+
 def get_db():
     db = SessionLocal()
     try:
@@ -87,3 +91,22 @@ def update_username(request: UpdateUsernameRequest, handler: RegisterUserHandler
     if updated_user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
     return {"message": "Username updated successfully", "new_username": updated_user.username}
+
+
+@router.delete("/delete-user", response_model=dict)
+def delete_user(request: DeleteUserRequest, handler: RegisterUserHandler = Depends(get_register_user_handler)):
+    email_obj = Email(request.email)
+
+    user = handler.auth_service.user_repository.find_by_email(email_obj)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    if request.password:
+        if not handler.auth_service.authenticate_user(email_obj, request.password):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect password")
+
+    success = handler.auth_service.delete_user(email_obj)
+    if not success:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return {"message": "User deleted successfully"}
