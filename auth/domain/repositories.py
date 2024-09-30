@@ -14,3 +14,13 @@ class UserRepository(ABC):
     @abstractmethod
     def create(self, user: User) -> None:
         pass
+
+    @abstractmethod
+    def delete(self, user: User) -> None:
+        """Elimina un usuario de la base de datos."""
+        pass
+
+    @abstractmethod
+    def update(self, user: User) -> None:
+        """Actualiza los datos de un usuario en la base de datos."""
+        pass

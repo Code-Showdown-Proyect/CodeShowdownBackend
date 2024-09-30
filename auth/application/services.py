@@ -7,6 +7,8 @@ from auth.domain.value_objects import Email, Password
 from auth.domain.repositories import UserRepository
 from passlib.context import CryptContext
 
+from auth.infrastructure.security.password_hasher import PasswordHasher
+
 SECRET_KEY = "ccd069ebb51b5d11dfff860e4ee1c7630945a45432771abd58e0f6f1c40968df"
 ALGORITHM = "HS256"
 Access_token_expire_minutes = 30
@@ -53,4 +55,29 @@ class AuthService:
 
         self.user_repository.create(new_user)
         return new_user
+
+    def delete_user(self, email: Email) -> bool:
+        user = self.user_repository.find_by_email(email)
+        if user:
+            self.user_repository.delete(user)
+            return True
+        return False
+
+    def update_username(self, email: Email, new_username: str) -> Optional[User]:
+        user = self.user_repository.find_by_email(email)
+        if user:
+            user.username = new_username
+            self.user_repository.update(user)
+            return user
+        return None
+
+    def update_password(self, email: Email, current_password: str, new_password: str) -> bool:
+        user = self.user_repository.find_by_email(email)
+        if user and PasswordHasher.verify_password(current_password, user.password):
+            # Si la contraseña actual es correcta, proceder a actualizarla
+            hashed_password = PasswordHasher.hash_password(new_password)
+            user.password = hashed_password
+            self.user_repository.update(user)
+            return True
+        return False
 

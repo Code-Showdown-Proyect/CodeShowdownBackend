@@ -33,3 +33,22 @@ class SQLAlchemyUserRepository(UserRepository):
         )
         self.session.add(user_model)
         self.session.commit()
+
+    def delete(self, user: User) -> None:
+        user_record = self.session.query(UserModel).filter(UserModel.email == user.email).first()
+        if user_record:
+            self.session.delete(user_record)
+            self.session.commit()
+
+
+    def update(self, user: User) -> None:
+        # Obtener el registro del usuario desde la base de datos
+        user_record = self.session.query(UserModel).filter(UserModel.email == user.email).first()
+        if user_record:
+            # Actualizar todos los atributos relevantes del usuario
+            user_record.username = user.username
+            user_record.hashed_password = user.password
+            user_record.role = user.role
+            # Asegurarse de que SQLAlchemy esté detectando los cambios y los confirme
+            self.session.commit()
+            self.session.refresh(user_record)
