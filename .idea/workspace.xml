@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: update password implemented">
+      <change afterPath="$PROJECT_DIR$/challenge generation/application/services/challenge_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/challenge generation/domain/entities/challenge.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/challenge generation/domain/repositories/challenge_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/challenge generation/domain/value_objects/challenge_id.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/challenge generation/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/community/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/interfaces/http/auth_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/interfaces/http/auth_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Challenge Generation/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge generation/application/commands/generate_challenge_command.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Community/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge generation/application/handlers/generate_challenge_handler.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +41,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/Code-Showdown-Proyect/CodeShowdownBackend.git&quot;,
-    &quot;accountId&quot;: &quot;4af7d33a-f7db-4eff-b8d5-cf84ab2f8102&quot;
+    &quot;accountId&quot;: &quot;1a950e5c-fe82-467f-adbd-4bdb25579b90&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -110,6 +117,7 @@
       <workItem from="1727644293238" duration="3983000" />
       <workItem from="1727651315441" duration="33000" />
       <workItem from="1727651350644" duration="1333000" />
+      <workItem from="1727711069602" duration="428000" />
     </task>
     <task id="LOCAL-00001" summary="Se crearon las clases para el contexto de Auth">
       <option name="closed" value="true" />
