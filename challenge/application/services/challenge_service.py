@@ -7,12 +7,13 @@ class ChallengeService:
         self.challenge_repository = challenge_repository
         self.chatgpt_client = ChatGPTClient()
 
-    def generate_challenge(self, difficulty: str, topic: str)-> Challenge:
+    def generate_challenge(self, difficulty: str, topic: str, competition_id: int)-> Challenge:
 
         challenge_text, output_example = self.chatgpt_client.generate_challenge(difficulty, topic)
 
         challenge = Challenge(
             id=None,
+            competition_id = competition_id,
             title=f"Reto de {topic} ({difficulty})",
             description=challenge_text,
             difficulty=difficulty,

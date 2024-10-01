@@ -14,6 +14,7 @@ router = APIRouter()
 
 class ChallengeResponse(BaseModel):
     id: int
+    competition_id:int
     title: str
     description: str
     difficulty: str
@@ -23,6 +24,7 @@ class ChallengeResponse(BaseModel):
 class GenerateChallengeRequest(BaseModel):
     difficulty: str
     topic: str
+    competition_id: int
 
 def get_db():
     db = SessionLocal()
@@ -40,11 +42,12 @@ from fastapi import APIRouter, Depends, HTTPException, status, Body
 @router.post("/generate-challenge", response_model=ChallengeResponse)
 def generate_challenge(generate_request: GenerateChallengeRequest = Body(...), service: ChallengeService = Depends(get_challenge_service)):
     try:
-        command = GenerateChallengeCommand(difficulty=generate_request.difficulty, topic=generate_request.topic)
+        command = GenerateChallengeCommand(difficulty=generate_request.difficulty, topic=generate_request.topic, competition_id= generate_request.competition_id)
         handler = GenerateChallengeHandler(service)
         challenge = handler.handle(command)
         return {
             "id": challenge.id,
+            "competition_id": challenge.competition_id,
             "title": challenge.title,
             "description": challenge.description,
             "difficulty": challenge.difficulty,
@@ -62,6 +65,7 @@ def list_challenges(service: ChallengeService = Depends(get_challenge_service)):
         return [
             {
                 "id": challenge.id,
+                "competition_id":challenge.competition_id,
                 "title": challenge.title,
                 "description": challenge.description,
                 "difficulty": challenge.difficulty,
@@ -80,6 +84,7 @@ def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_cha
         challenge = service.get_challenge_by_id(challenge_id)
         return {
             "id": challenge.id,
+            "competition_id": challenge.competition_id,
             "title": challenge.title,
             "description": challenge.description,
             "difficulty": challenge.difficulty,

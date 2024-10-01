@@ -12,6 +12,7 @@ class SQLAlchemyChallengeRepository(ChallengeRepository):
         if challenge_record:
             return Challenge(
                 id=challenge_record.id,
+                competition_id=challenge_record.competition_id,
                 title=challenge_record.title,
                 description=challenge_record.description,
                 difficulty=challenge_record.difficulty,
@@ -24,6 +25,7 @@ class SQLAlchemyChallengeRepository(ChallengeRepository):
     def save(self, challenge: Challenge) -> None:
         challenge_model = ChallengeModel(
             title=challenge.title,
+            competition_id=challenge.competition_id,
             description=challenge.description,
             difficulty=challenge.difficulty,
             tags=challenge.tags,
@@ -39,6 +41,7 @@ class SQLAlchemyChallengeRepository(ChallengeRepository):
         return [
             Challenge(
                 id=challenge.id,
+                competition_id= challenge.competition_id,
                 title=challenge.title,
                 description=challenge.description,
                 difficulty=challenge.difficulty,

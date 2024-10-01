@@ -3,8 +3,9 @@ from typing import List
 
 
 class Challenge:
-    def __init__(self, id: int, title: str, description: str, difficulty: str, tags: List[str], created_at: datetime, output_example: str):
+    def __init__(self, id: int, competition_id: int, title: str, description: str, difficulty: str, tags: List[str], created_at: datetime, output_example: str):
         self.id = id
+        self.competition_id = competition_id
         self.title = title
         self.description = description
         self.difficulty = difficulty
@@ -13,4 +14,4 @@ class Challenge:
         self.output_example = output_example
 
     def __repr__(self):
-        return f"Challenge(id={self.id}, title={self.title}, difficulty={self.difficulty}, tags={self.tags}"
+        return f"Challenge(id={self.id}, competition_id={self.competition_id} ,title={self.title}, difficulty={self.difficulty}, tags={self.tags}"

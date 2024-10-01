@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: chat-gpt implementation">
+    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: challenges crud updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/application/commands/generate_challenge_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/commands/generate_challenge_command.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/application/handlers/generate_challenge_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/handlers/generate_challenge_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/application/services/challenge_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/services/challenge_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/domain/entities/challenge.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/domain/entities/challenge.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/persistence/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -34,12 +38,12 @@
     &quot;assignee&quot;: &quot;koliva1997&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Code-Showdown-Proyect/CodeShowdownBackend.git",
-    "accountId": "4af7d33a-f7db-4eff-b8d5-cf84ab2f8102"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Code-Showdown-Proyect/CodeShowdownBackend.git&quot;,
+    &quot;accountId&quot;: &quot;4af7d33a-f7db-4eff-b8d5-cf84ab2f8102&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -114,7 +118,8 @@
       <workItem from="1727651315441" duration="33000" />
       <workItem from="1727651350644" duration="1333000" />
       <workItem from="1727711069602" duration="4355000" />
-      <workItem from="1727733578603" duration="8902000" />
+      <workItem from="1727733578603" duration="9212000" />
+      <workItem from="1727795248668" duration="5387000" />
     </task>
     <task id="LOCAL-00001" summary="Se crearon las clases para el contexto de Auth">
       <option name="closed" value="true" />
@@ -172,7 +177,23 @@
       <option name="project" value="LOCAL" />
       <updated>1727727881271</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: challenges crud updated">
+      <option name="closed" value="true" />
+      <created>1727742959390</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1727742959390</updated>
+    </task>
+    <task id="LOCAL-00009" summary="feat: challenges crud updated">
+      <option name="closed" value="true" />
+      <created>1727743182169</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1727743182169</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,10 +215,11 @@
     <MESSAGE value="feat: update password implemented" />
     <MESSAGE value="feat: files for challenge context created" />
     <MESSAGE value="feat: chat-gpt implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: chat-gpt implementation" />
+    <MESSAGE value="feat: challenges crud updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: challenges crud updated" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727742922245" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727801258284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$contraseña.coverage" NAME="contraseña Coverage Results" MODIFIED="1727653915852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/application" />
     <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727653108263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

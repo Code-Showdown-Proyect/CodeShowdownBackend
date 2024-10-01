@@ -7,4 +7,4 @@ class GenerateChallengeHandler:
         self.challenge_service = challenge_service
 
     def handle(self, command: GenerateChallengeCommand):
-        return self.challenge_service.generate_challenge(command.difficulty, command.topic)
+        return self.challenge_service.generate_challenge(command.difficulty, command.topic, command.competition_id)
