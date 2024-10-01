@@ -29,3 +29,7 @@ class ParticipantRepository(ABC):
     def delete(self, participant_id: int) -> None:
         """Elimina un participante del repositorio"""
         pass
+
+    @abstractmethod
+    def find_by_competition_id(self, competition_id: int)->list:
+        pass

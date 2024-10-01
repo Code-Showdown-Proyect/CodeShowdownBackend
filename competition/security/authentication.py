@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 from fastapi import HTTPException, status
 
 # Cargar configuración desde las variables de entorno
-SECRET_KEY = os.getenv("SECRET_KEY", "mysecretkey")
+SECRET_KEY = os.getenv("SECRET_KEY", "ccd069ebb51b5d11dfff860e4ee1c7630945a45432771abd58e0f6f1c40968df")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

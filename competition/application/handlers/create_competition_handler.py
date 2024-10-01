@@ -10,5 +10,6 @@ class CreateCompetitionHandler:
             name=command.name,
             number_of_exercises=command.number_of_exercises,
             time_limit=command.time_limit,
-            password=command.password
+            password=command.password,
+            creator_id=command.creator_id
         )

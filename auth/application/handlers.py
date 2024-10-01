@@ -27,6 +27,6 @@ class AuthenticateUserHandler:
             password=command.password
         )
         if user:
-            access_token = self.auth_service.create_access_token(data={"sub": user.email})
+            access_token = self.auth_service.create_access_token(data={"sub": user.email, "id": user.id})
             return access_token
         return None

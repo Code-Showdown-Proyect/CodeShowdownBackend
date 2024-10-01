@@ -3,6 +3,8 @@ from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
 from typing import Optional
 
+from competition.security.authentication import ALGORITHM, SECRET_KEY
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
 # Simulamos un rol de usuario básico. En producción, este debería consultarse desde la base de datos.
@@ -11,7 +13,7 @@ ROLES = {
     "admin@example.com": "admin"
 }
 
-def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
+def get_current_user(token: str = Depends(oauth2_scheme)) -> int:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -19,7 +21,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)) -> str:
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: Optional[str] = payload.get("sub")
+        username: Optional[int] = payload.get("id")
         if username is None:
             raise credentials_exception
         return username

@@ -6,4 +6,4 @@ class DeleteCompetitionHandler:
         self.service = service
 
     def handle(self, command: DeleteCompetitionCommand):
-        return self.service.delete_competition(competition_id=command.competition_id)
+        return self.service.delete_competition(competition_id=command.competition_id, creator_id=command.creator_id)

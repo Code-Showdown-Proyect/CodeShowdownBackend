@@ -15,7 +15,7 @@ class CompetitionModel(Base):
     time_limit = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     status = Column(String, default='pending')
-    creator_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    creator_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     access_code = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=True)
 
@@ -27,8 +27,18 @@ class ParticipantModel(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    competition_id = Column(Integer, ForeignKey('competitions.id'), nullable=False)
+    competition_id = Column(Integer, ForeignKey('competitions.id', ondelete='CASCADE'), nullable=False)
     score = Column(Integer, default=0)
     joined_at = Column(DateTime, default=datetime.utcnow)
 
     competition = relationship("CompetitionModel", back_populates="participants")
+
+class UserModel(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    role = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    email = Column(String, nullable=False, unique=True)

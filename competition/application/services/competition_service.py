@@ -10,7 +10,7 @@ class CompetitionService:
         self.competition_repository = competition_repository
         self.participant_repository = participant_repository
 
-    def create_competition(self, name: str, number_of_exercises: int, time_limit: int, password: Optional[str] = None) -> Competition:
+    def create_competition(self, name: str, number_of_exercises: int, time_limit: int, creator_id: int, password: Optional[str] = None) -> Competition:
         competition = Competition(
             id=None,
             name=name,
@@ -19,7 +19,8 @@ class CompetitionService:
             created_at=datetime.utcnow(),
             status="pending",
             access_code=self._generate_access_code(),
-            password=password
+            password=password,
+            creator_id= creator_id
         )
         self.competition_repository.create(competition)
         return competition
@@ -46,7 +47,7 @@ class CompetitionService:
         return first_challenge
 
 
-    def join_competition(self, access_code: str, password: Optional[str] = None) -> Participant:
+    def join_competition(self, access_code: str, user_id: int, password: Optional[str] = None) -> Participant:
         competition = self.competition_repository.find_by_access_code(access_code)
         if not competition:
             raise ValueError("Competition not found")
@@ -55,7 +56,7 @@ class CompetitionService:
 
         participant = Participant(
             id=None,
-            user_id=None,  # Deberíamos obtener esto del contexto de autenticación
+            user_id=user_id,  
             competition_id=competition.id,
             joined_at=datetime.utcnow(),
             score=0
@@ -87,3 +88,15 @@ class CompetitionService:
         import random
         import string
         return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+    def delete_competition(self, competition_id, creator_id)->None:
+        competition = self.competition_repository.find_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+        if competition.creator_id != creator_id:
+            raise PermissionError("Only the creator can delete this competition")
+
+        participants = self.participant_repository.find_by_competition_id(competition_id)
+        for participant in participants:
+            self.participant_repository.delete(participant.id)
+        self.competition_repository.delete(competition_id)

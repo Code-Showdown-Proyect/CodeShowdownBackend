@@ -57,3 +57,6 @@ class SQLAlchemyParticipantRepository(ParticipantRepository):
             score=model.score,
             joined_at=model.joined_at
         )
+
+    def find_by_competition_id(self, competition_id: int) -> list:
+        return self.session.query(ParticipantModel).filter_by(competition_id=competition_id).all()

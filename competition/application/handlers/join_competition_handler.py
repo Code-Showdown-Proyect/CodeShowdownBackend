@@ -8,5 +8,6 @@ class JoinCompetitionHandler:
     def handle(self, command: JoinCompetitionCommand):
         return self.service.join_competition(
             access_code=command.access_code,
-            password=command.password
+            password=command.password,
+            user_id= command.user_id
         )
