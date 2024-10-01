@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 
@@ -16,13 +18,15 @@ from competition.infrastructure.persistence.sqlalchemy_competition_repository im
 from competition.infrastructure.persistence.sqlalchemy_participant_repository import SQLAlchemyParticipantRepository
 from pydantic import BaseModel
 
+from competition.security.authorization import get_current_user
+
 router = APIRouter()
 
 class CreateCompetitionRequest(BaseModel):
     name: str
     number_of_exercises: int
     time_limit: int  # en minutos
-    password: str = None
+    password: Optional[str] = None
 
 class JoinCompetitionRequest(BaseModel):
     access_code: str
@@ -52,12 +56,13 @@ def get_competition_service(db: Session = Depends(get_db)):
 
 # Endpoint para crear una nueva competencia
 @router.post("/create-competition", response_model=dict)
-def create_competition(request: CreateCompetitionRequest, service: CompetitionService = Depends(get_competition_service)):
+def create_competition(request: CreateCompetitionRequest, service: CompetitionService = Depends(get_competition_service), current_user: str = Depends(get_current_user)):
     command = CreateCompetitionCommand(
         name=request.name,
         number_of_exercises=request.number_of_exercises,
         time_limit=request.time_limit,
-        password=request.password
+        password=request.password,
+        creator_id=current_user.id
     )
     handler = CreateCompetitionHandler(service)
     try:
@@ -81,8 +86,8 @@ def join_competition(request: JoinCompetitionRequest, service: CompetitionServic
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except PermissionError as e:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(e))
-@router.delete("/delete-competition", response_model=dict)
 
+@router.delete("/delete-competition", response_model=dict)
 def delete_competition(request: DeleteCompetitionRequest, service: CompetitionService = Depends(get_competition_service)):
     command = DeleteCompetitionCommand(competition_id=request.competition_id)
     handler = DeleteCompetitionHandler(service)
@@ -91,6 +96,7 @@ def delete_competition(request: DeleteCompetitionRequest, service: CompetitionSe
         return {"message": "Competition deleted successfully"}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
 @router.post("/submit-answer", response_model=dict)
 
 def submit_answer(request: SubmitAnswerRequest, service: CompetitionService = Depends(get_competition_service)):
