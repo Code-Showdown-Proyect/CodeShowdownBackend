@@ -24,6 +24,28 @@ class CompetitionService:
         self.competition_repository.create(competition)
         return competition
 
+    def get_competition_by_id(self, competition_id: int) -> Competition:
+        competition = self.competition_repository.find_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+        return competition
+
+    def generate_first_challenge(self, competition_id: int):
+        competition = self.get_competition_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+
+        # Aquí podrías integrar la lógica del contexto de generación de desafíos (por ejemplo, `ChallengeGeneration`).
+        # O generar un desafío de prueba para el primer desafío.
+        first_challenge = {
+            "id": 1,
+            "title": "Primer Desafío de Competencia",
+            "description": "Implementa una función que devuelva el número factorial de un entero positivo.",
+            "difficulty": "media"
+        }
+        return first_challenge
+
+
     def join_competition(self, access_code: str, password: Optional[str] = None) -> Participant:
         competition = self.competition_repository.find_by_access_code(access_code)
         if not competition:
