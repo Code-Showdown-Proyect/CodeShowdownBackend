@@ -10,7 +10,7 @@ class Challenge:
         self.difficulty = difficulty
         self.tags = tags
         self.created_at = created_at
-        self.output = output_example
+        self.output_example = output_example
 
     def __repr__(self):
         return f"Challenge(id={self.id}, title={self.title}, difficulty={self.difficulty}, tags={self.tags}"

@@ -84,7 +84,7 @@ def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_cha
             "description": challenge.description,
             "difficulty": challenge.difficulty,
             "tags": challenge.tags,
-            "output_example": challenge.output
+            "output_example": challenge.output_example
         }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
