@@ -36,7 +36,7 @@ def get_challenge_service(db: Session = Depends(get_db)):
     challenge_repository = SQLAlchemyChallengeRepository(db)
     return ChallengeService(challenge_repository)
 
-# Endpoint para generar un nuevo reto
+
 from fastapi import APIRouter, Depends, HTTPException, status, Body
 
 @router.post("/generate-challenge", response_model=ChallengeResponse)
@@ -57,7 +57,7 @@ def generate_challenge(generate_request: GenerateChallengeRequest = Body(...), s
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-# Endpoint para listar todos los retos disponibles
+
 @router.get("/list-challenges", response_model=List[ChallengeResponse])
 def list_challenges(service: ChallengeService = Depends(get_challenge_service)):
     try:
@@ -77,7 +77,7 @@ def list_challenges(service: ChallengeService = Depends(get_challenge_service)):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-# Endpoint para obtener un reto por su ID
+
 @router.get("/get-challenge/{challenge_id}", response_model=ChallengeResponse)
 def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_challenge_service)):
     try:
@@ -96,7 +96,7 @@ def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_cha
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
-# Endpoint para eliminar un reto por su ID
+
 @router.delete("/delete-challenge/{challenge_id}", response_model=dict)
 def delete_challenge(challenge_id: str, service: ChallengeService = Depends(get_challenge_service)):
     try:

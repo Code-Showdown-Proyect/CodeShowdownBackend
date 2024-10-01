@@ -4,8 +4,8 @@ import re
 
 class ChatGPTClient:
     def __init__(self):
-        # Configuración inicial con la API key
-        # openai.api_key = "api"
+    # Configuración inicial con la API key
+        openai.api_key = "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"
 
     def generate_challenge(self, difficulty: str, topic: str) -> (str, str):
         # Mensaje de prompt para generar un desafío de programación

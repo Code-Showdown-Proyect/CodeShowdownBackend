@@ -5,14 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: challenges crud updated">
+      <change afterPath="$PROJECT_DIR$/competition/application/commands/delete_competition_command.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/commands/join_competition_command.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/commands/submit_answer_command.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/handlers/create_competition_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/handlers/delete_competition_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/handlers/join_competition_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/handlers/submit_answer_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/application/services/competition_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/entities/competition.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/entities/competition_session.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/entities/participant.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/repositories/competition_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/repositories/participant_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/value objects/access_code.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/domain/value objects/password.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/infrastructure/persistence/database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/infrastructure/persistence/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/infrastructure/persistence/sqlalchemy_competition_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/infrastructure/persistence/sqlalchemy_participant_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/infrastructure/real_time/socket_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/interfaces/rest/competition_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/interfaces/web_sockets/competition_socket.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/security/authentication.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/security/authorization.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/competition/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/application/commands/generate_challenge_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/commands/generate_challenge_command.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/application/handlers/generate_challenge_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/handlers/generate_challenge_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/application/services/challenge_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/application/services/challenge_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/domain/entities/challenge.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/domain/entities/challenge.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Competition/test.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/challenge_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/persistence/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/persistence/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/interfaces/rest/challenge_controller.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
