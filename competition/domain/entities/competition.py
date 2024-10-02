@@ -35,15 +35,6 @@ class Competition:
             return True  # Sala pública, no requiere contraseña
         return self.password == password
 
-    def kick_participant(self, participant_id: int, user_id: int) -> bool:
-        
-        if user_id != self.creator_id:
-            raise PermissionError("Only the creator of the competition can kick participants.")
-        for participant in self.participants:
-            if participant.id == participant_id:
-                self.remove_participant(participant_id)
-                return True
-        return False
 
     def __repr__(self):
         return f"Competition(id={self.id}, name='{self.name}', number_of_exercises={self.number_of_exercises}, status='{self.status}', access_code='{self.access_code}')"

@@ -7,4 +7,11 @@ class SubmitAnswerHandler:
 
     def handle(self, command: SubmitAnswerCommand):
         # Aquí podemos agregar lógica para evaluar la respuesta.
-        pass  # La lógica para evaluar la respuesta y actualizar el score
+        return self.service.submit_answer(
+            participant_id=command.participant_id,
+            competition_id=command.competition_id,
+            answer=command.answer,
+            exercise_id=command.exercise_id,
+            time_taken=command.time_taken
+
+        )

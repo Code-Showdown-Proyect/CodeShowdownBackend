@@ -66,7 +66,7 @@ class CompetitionService:
         self.participant_repository.create(participant)
         return participant
 
-    def submit_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int) -> None:
+    def submit_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int, exercise_id: int) -> None:
         """Recibe la respuesta de un participante y almacena la información sin evaluar"""
         competition = self.competition_repository.find_by_id(competition_id)
         if not competition:
@@ -77,13 +77,13 @@ class CompetitionService:
             raise ValueError("Participant not found")
 
         # Aquí, simplemente almacenamos la respuesta junto con el tiempo tomado para futuras evaluaciones
-        self._store_answer(participant_id, competition_id, answer, time_taken)
+        self._store_answer(participant_id, competition_id, answer, time_taken, exercise_id)
 
-    def _store_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int) -> None:
+    def _store_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int, exercise_id: int) -> None:
         """Almacena la respuesta y el tiempo tomado en algún repositorio específico"""
         # Aquí deberíamos tener un repositorio que almacene las respuestas.
         # Esto podría ser implementado en el futuro como AnswerRepository.
-        print(f"Respuesta del participante {participant_id} en competencia {competition_id} almacenada.")
+        print(f"Respuesta {answer} del participante {participant_id} en pregunta {exercise_id} de la competencia {competition_id} almacenada. le tomo {time_taken} segundos")
 
     def _generate_access_code(self) -> str:
         # Lógica para generar un código de acceso único (por ejemplo, alfanumérico de 6 caracteres)
