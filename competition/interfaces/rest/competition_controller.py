@@ -7,11 +7,13 @@ from sqlalchemy.orm import Session
 from competition.application.commands.create_competition_command import CreateCompetitionCommand
 from competition.application.commands.delete_competition_command import DeleteCompetitionCommand
 from competition.application.commands.join_competition_command import JoinCompetitionCommand
+from competition.application.commands.kick_participant_command import KickParticipantCommand
 from competition.application.commands.submit_answer_command import SubmitAnswerCommand
 from competition.application.commands.update_competition_command import UpdateCompetitionCommand
 from competition.application.handlers.create_competition_handler import CreateCompetitionHandler
 from competition.application.handlers.delete_competition_handler import DeleteCompetitionHandler
 from competition.application.handlers.join_competition_handler import JoinCompetitionHandler
+from competition.application.handlers.kick_participant_handler import KickParticipantHandler
 from competition.application.handlers.submit_answer_handler import SubmitAnswerHandler
 from competition.application.handlers.update_competition_handler import UpdateCompetitionHandler
 from competition.application.services.competition_service import CompetitionService
@@ -50,6 +52,10 @@ class UpdateCompetitionRequest(BaseModel):
     start_date: datetime
     number_of_exercises: int
     password: Optional[str] = None
+
+class KickParticipantRequest(BaseModel):
+    participant_id: int
+    competition_id: int
 
 # Dependencia para la base de datos
 def get_db():
@@ -106,7 +112,6 @@ def delete_competition(request: DeleteCompetitionRequest, service: CompetitionSe
         creator_id = current_user
     )
     handler = DeleteCompetitionHandler(service)
-    handler = DeleteCompetitionHandler(service)
     try:
         handler.handle(command)
         return {"message": "Competition deleted successfully"}
@@ -115,6 +120,24 @@ def delete_competition(request: DeleteCompetitionRequest, service: CompetitionSe
     except PermissionError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Only the creator can delete this competition")
+
+@router.delete("/kick-participant", response_model=dict)
+def kick_participant(request: KickParticipantRequest, service: CompetitionService = Depends(get_competition_service),current_user: int = Depends(get_current_user)):
+    command = KickParticipantCommand(
+        competition_id=request.competition_id,
+        creator_id = current_user,
+        participant_id=request.participant_id
+    )
+    handler = KickParticipantHandler(service)
+    try:
+        handler.handle(command)
+        return {"message": "Participant kicked successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Only the creator can kick participants")
+
 
 @router.post("/submit-answer", response_model=dict)
 

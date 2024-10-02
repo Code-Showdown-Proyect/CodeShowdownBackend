@@ -101,6 +101,19 @@ class CompetitionService:
             self.participant_repository.delete(participant.id)
         self.competition_repository.delete(competition_id)
 
+    def kick_participant(self, participant_id: int, competition_id: int, creator_id: int) -> None:
+        competition = self.competition_repository.find_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+        if competition.creator_id != creator_id:
+            raise PermissionError("Only the creator can kick the participant")
+        participants = self.participant_repository.find_by_competition_id(competition_id)
+        for participant in participants:
+            if participant.id == participant_id:
+                self.participant_repository.delete(participant.id)
+            if participant_id not in [p.id for p in participants]:
+                raise ValueError("Participant not found in competition")
+
     def update_competition(self, competition_id, creator_id, name, number_of_exercises, time_limit, password)->Competition:
         competition = self.competition_repository.find_by_id(competition_id)
         if not competition:
