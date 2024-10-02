@@ -100,3 +100,16 @@ class CompetitionService:
         for participant in participants:
             self.participant_repository.delete(participant.id)
         self.competition_repository.delete(competition_id)
+
+    def update_competition(self, competition_id, creator_id, name, number_of_exercises, time_limit, password)->Competition:
+        competition = self.competition_repository.find_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+        if competition.creator_id != creator_id:
+            raise PermissionError("Only the creator can update this competition")
+        competition.name = name
+        competition.number_of_exercises = number_of_exercises
+        competition.time_limit = time_limit
+        competition.password = password
+        self.competition_repository.update(competition)
+        return competition
