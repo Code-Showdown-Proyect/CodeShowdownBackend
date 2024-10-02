@@ -128,3 +128,11 @@ class CompetitionService:
         competition.password = password
         self.competition_repository.update(competition)
         return competition
+
+    def update_status(self, competition_id, status)->Competition:
+        competition = self.competition_repository.find_by_id(competition_id)
+        if not competition:
+            raise ValueError("Competition not found")
+        competition.status = status
+        self.competition_repository.update(competition)
+        return competition
