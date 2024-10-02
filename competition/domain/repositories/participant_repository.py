@@ -33,3 +33,7 @@ class ParticipantRepository(ABC):
     @abstractmethod
     def find_by_competition_id(self, competition_id: int)->list:
         pass
+
+    @abstractmethod
+    def find_by_user_and_competition(self, user_id: int, competition_id: int) -> Participant:
+        pass

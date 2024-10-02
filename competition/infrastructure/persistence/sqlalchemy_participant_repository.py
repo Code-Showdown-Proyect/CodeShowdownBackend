@@ -60,3 +60,9 @@ class SQLAlchemyParticipantRepository(ParticipantRepository):
 
     def find_by_competition_id(self, competition_id: int) -> list:
         return self.session.query(ParticipantModel).filter_by(competition_id=competition_id).all()
+
+    def find_by_user_and_competition(self, user_id: int, competition_id: int) -> Participant:
+        participant_model = self.session.query(ParticipantModel).filter_by(user_id=user_id, competition_id=competition_id).first()
+        if not participant_model:
+            return None
+        return self._to_entity(participant_model)

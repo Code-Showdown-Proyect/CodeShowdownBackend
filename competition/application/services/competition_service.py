@@ -53,7 +53,9 @@ class CompetitionService:
             raise ValueError("Competition not found")
         if competition.password and competition.password != password:
             raise PermissionError("Incorrect password")
-
+        existing_participant = self.participant_repository.find_by_user_and_competition(user_id, competition.id)
+        if existing_participant:
+            raise ValueError("User is already joined in this competition")
         participant = Participant(
             id=None,
             user_id=user_id,  
