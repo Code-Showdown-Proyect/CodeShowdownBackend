@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, Numeric, ARRAY
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
@@ -42,3 +42,27 @@ class UserModel(Base):
     role = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     email = Column(String, nullable=False, unique=True)
+
+class AnswerModel(Base):
+    __tablename__ = 'submitted_answers'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    participant_id = Column(Integer, ForeignKey('participants.id', ondelete='CASCADE'), nullable=False)
+    challenge_id = Column(Integer, ForeignKey('challenges.id', ondelete='CASCADE'), nullable=False)
+    answer = Column(String, nullable=False)
+    submitted_at = Column(DateTime, default=datetime.utcnow)
+    is_correct = Column(Boolean, nullable=True)
+    feedback = Column(String, nullable=True)
+    time_taken = Column(Numeric, nullable=False)
+
+class ChallengeModel(Base):
+    __tablename__ = "challenges"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    competition_id = Column(Integer, index=True, nullable=False)
+    title = Column(String, index=True, nullable=False)
+    description = Column(String, nullable=False)
+    difficulty = Column(String, nullable=False)
+    tags = Column(ARRAY(String), nullable=False)
+    output_example = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)

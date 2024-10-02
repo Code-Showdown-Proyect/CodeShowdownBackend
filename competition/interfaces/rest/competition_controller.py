@@ -19,6 +19,7 @@ from competition.application.handlers.update_competition_handler import UpdateCo
 from competition.application.services.competition_service import CompetitionService
 
 from competition.infrastructure.persistence.database import SessionLocal
+from competition.infrastructure.persistence.sqlalchemy_answer_repository import SQLAlchemyAnswerRepository
 from competition.infrastructure.persistence.sqlalchemy_competition_repository import SQLAlchemyCompetitionRepository
 from competition.infrastructure.persistence.sqlalchemy_participant_repository import SQLAlchemyParticipantRepository
 from pydantic import BaseModel
@@ -43,13 +44,13 @@ class DeleteCompetitionRequest(BaseModel):
 class SubmitAnswerRequest(BaseModel):
     participant_id: int
     competition_id: int
+    exercise_id: int
     answer: str
     time_taken: int
 
 class UpdateCompetitionRequest(BaseModel):
     competition_id: int
     name: str
-    start_date: datetime
     number_of_exercises: int
     password: Optional[str] = None
 
@@ -72,7 +73,8 @@ def get_db():
 def get_competition_service(db: Session = Depends(get_db)):
     competition_repository = SQLAlchemyCompetitionRepository(db)
     participant_repository = SQLAlchemyParticipantRepository(db)
-    return CompetitionService(competition_repository, participant_repository)
+    answer_repository = SQLAlchemyAnswerRepository(db)
+    return CompetitionService(competition_repository, participant_repository,answer_repository)
 
 
 
@@ -151,6 +153,7 @@ def submit_answer(request: SubmitAnswerRequest, service: CompetitionService = De
     command = SubmitAnswerCommand(
         participant_id=request.participant_id,
         competition_id=request.competition_id,
+        exercise_id=request.exercise_id,
         answer=request.answer,
         time_taken=request.time_taken
     )

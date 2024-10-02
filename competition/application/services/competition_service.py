@@ -1,12 +1,15 @@
+from competition.domain.entities.answer import Answer
 from competition.domain.entities.competition import Competition
 from competition.domain.entities.participant import Participant
 from competition.domain.repositories.competition_repository import CompetitionRepository
 from competition.domain.repositories.participant_repository import ParticipantRepository
+from competition.domain.repositories.answer_repository import AnswerRepository
 from datetime import datetime
 from typing import Optional
 
 class CompetitionService:
-    def __init__(self, competition_repository: CompetitionRepository, participant_repository: ParticipantRepository):
+    def __init__(self, competition_repository: CompetitionRepository, participant_repository: ParticipantRepository, answer_repository: AnswerRepository):
+        self.answer_repository = answer_repository
         self.competition_repository = competition_repository
         self.participant_repository = participant_repository
 
@@ -66,24 +69,22 @@ class CompetitionService:
         self.participant_repository.create(participant)
         return participant
 
-    def submit_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int, exercise_id: int) -> None:
-        """Recibe la respuesta de un participante y almacena la información sin evaluar"""
+    def submit_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int, exercise_id: int) -> Answer:
         competition = self.competition_repository.find_by_id(competition_id)
         if not competition:
             raise ValueError("Competition not found")
-
         participant = self.participant_repository.find_by_id(participant_id)
         if not participant:
             raise ValueError("Participant not found")
-
-        # Aquí, simplemente almacenamos la respuesta junto con el tiempo tomado para futuras evaluaciones
-        self._store_answer(participant_id, competition_id, answer, time_taken, exercise_id)
-
-    def _store_answer(self, participant_id: int, competition_id: int, answer: str, time_taken: int, exercise_id: int) -> None:
-        """Almacena la respuesta y el tiempo tomado en algún repositorio específico"""
-        # Aquí deberíamos tener un repositorio que almacene las respuestas.
-        # Esto podría ser implementado en el futuro como AnswerRepository.
-        print(f"Respuesta {answer} del participante {participant_id} en pregunta {exercise_id} de la competencia {competition_id} almacenada. le tomo {time_taken} segundos")
+        answer = Answer(
+            id=None,
+            participant_id=participant_id,
+            challenge_id=exercise_id,
+            answer=answer,
+            time_taken=time_taken
+        )
+        self.answer_repository.create(answer)
+        return answer
 
     def _generate_access_code(self) -> str:
         # Lógica para generar un código de acceso único (por ejemplo, alfanumérico de 6 caracteres)
