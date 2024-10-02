@@ -57,6 +57,10 @@ class KickParticipantRequest(BaseModel):
     participant_id: int
     competition_id: int
 
+class UpdateStatus(BaseModel):
+    status: str
+    competition_id: int
+
 # Dependencia para la base de datos
 def get_db():
     db = SessionLocal()
@@ -69,6 +73,8 @@ def get_competition_service(db: Session = Depends(get_db)):
     competition_repository = SQLAlchemyCompetitionRepository(db)
     participant_repository = SQLAlchemyParticipantRepository(db)
     return CompetitionService(competition_repository, participant_repository)
+
+
 
 # Endpoint para crear una nueva competencia
 @router.post("/create-competition", response_model=dict)
@@ -174,3 +180,11 @@ def update_competition(request: UpdateCompetitionRequest, service: CompetitionSe
     except PermissionError:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail="Only the creator can update this competition")
+
+@router.put("/update-status", response_model=dict)
+def update_status(request: UpdateStatus, service: CompetitionService = Depends(get_competition_service)):
+    try:
+        service.update_status(request.competition_id, request.status)
+        return {"message": "Status updated successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

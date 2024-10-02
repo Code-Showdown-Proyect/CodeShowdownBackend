@@ -6,7 +6,6 @@ class SubmitAnswerHandler:
         self.service = service
 
     def handle(self, command: SubmitAnswerCommand):
-        # Aquí podemos agregar lógica para evaluar la respuesta.
         return self.service.submit_answer(
             participant_id=command.participant_id,
             competition_id=command.competition_id,
