@@ -36,5 +36,8 @@ class ChallengeService:
     def delete_challenge(self, challenge_id: str) -> bool:
         return self.challenge_repository.delete(challenge_id)
 
+    def list_all_challenges_by_competition_id(self, competition_id):
+        return self.challenge_repository.list_all_by_competition_id(competition_id)
+
 
 

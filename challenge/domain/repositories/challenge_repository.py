@@ -25,3 +25,8 @@ class ChallengeRepository(ABC):
     def delete(self, challenge_id: str) -> bool:
         """Eliminar un reto por su identificador."""
         pass
+
+    @abstractmethod
+    def list_all_by_competition_id(self, competition_id: str) -> List[Challenge]:
+        """Listar todos los retos de una competencia."""
+        pass

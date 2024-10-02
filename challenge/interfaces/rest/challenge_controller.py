@@ -96,6 +96,24 @@ def get_challenge(challenge_id: str, service: ChallengeService = Depends(get_cha
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
+@router.get("/get-challenges-by-competition/{competition_id}", response_model=List[ChallengeResponse])
+def get_challenge(competition_id: str, service: ChallengeService = Depends(get_challenge_service)):
+    try:
+        challenges = service.list_all_challenges_by_competition_id(competition_id)
+        return [
+            {
+                "id": challenge.id,
+                "competition_id": challenge.competition_id,
+                "title": challenge.title,
+                "description": challenge.description,
+                "difficulty": challenge.difficulty,
+                "tags": challenge.tags,
+                "output_example": challenge.output_example
+            }
+            for challenge in challenges
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
 @router.delete("/delete-challenge/{challenge_id}", response_model=dict)
 def delete_challenge(challenge_id: str, service: ChallengeService = Depends(get_challenge_service)):

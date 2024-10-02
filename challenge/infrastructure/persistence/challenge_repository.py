@@ -58,3 +58,18 @@ class SQLAlchemyChallengeRepository(ChallengeRepository):
             self.session.commit()
             return True
         return False
+
+    def list_all_by_competition_id(self, competition_id: str) -> list:
+        challenges = self.session.query(ChallengeModel).filter(ChallengeModel.competition_id == competition_id).all()
+        return [
+            Challenge(
+                id=challenge.id,
+                competition_id= challenge.competition_id,
+                title=challenge.title,
+                description=challenge.description,
+                difficulty=challenge.difficulty,
+                tags=challenge.tags,
+                created_at=challenge.created_at,
+                output_example=challenge.output_example
+            ) for challenge in challenges
+        ]
