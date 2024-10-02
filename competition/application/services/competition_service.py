@@ -1,3 +1,5 @@
+import httpx
+
 from competition.domain.entities.answer import Answer
 from competition.domain.entities.competition import Competition
 from competition.domain.entities.participant import Participant
@@ -34,20 +36,37 @@ class CompetitionService:
             raise ValueError("Competition not found")
         return competition
 
-    def generate_first_challenge(self, competition_id: int):
+    async def generate_first_challenge(self, competition_id: int):
         competition = self.get_competition_by_id(competition_id)
         if not competition:
             raise ValueError("Competition not found")
 
+        # URL del endpoint del microservicio de challenges
+        challenge_service_url = f"http://127.0.0.1:8000/challenges/get-challenges-by-competition/{competition_id}"
+
+        # Realizar la solicitud HTTP al microservicio
+        async with httpx.AsyncClient() as client:
+            response = await client.get(challenge_service_url)
+
+        # Validar la respuesta
+        if response.status_code != 200:
+            raise ValueError("Failed to fetch challenges from Challenge Service")
+
+        challenges = response.json()
+        if not challenges:
+            raise ValueError("No challenges found for this competition")
         # Aquí podrías integrar la lógica del contexto de generación de desafíos (por ejemplo, `ChallengeGeneration`).
         # O generar un desafío de prueba para el primer desafío.
-        first_challenge = {
-            "id": 1,
-            "title": "Primer Desafío de Competencia",
-            "description": "Implementa una función que devuelva el número factorial de un entero positivo.",
-            "difficulty": "media"
+        first_challenge = challenges[0]
+        print(challenges)
+        print("First challenge:", first_challenge)
+
+        return{
+            "id": first_challenge["id"],
+            "title": first_challenge["title"],
+            "description": first_challenge["description"],
+            "difficulty": first_challenge["difficulty"]
         }
-        return first_challenge
 
 
     def join_competition(self, access_code: str, user_id: int, password: Optional[str] = None) -> Participant:
