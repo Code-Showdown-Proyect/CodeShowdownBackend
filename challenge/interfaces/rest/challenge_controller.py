@@ -8,7 +8,7 @@ from challenge.application.services.challenge_service import ChallengeService
 
 from challenge.application.commands.generate_challenge_command import GenerateChallengeCommand
 from challenge.application.handlers.generate_challenge_handler import GenerateChallengeHandler
-from challenge.infrastructure.persistence.challenge_repository import SQLAlchemyChallengeRepository
+from challenge.infrastructure.persistence.sqlalchemy_challenge_repository import SQLAlchemyChallengeRepository
 
 router = APIRouter()
 
