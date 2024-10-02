@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends, status
@@ -7,10 +8,12 @@ from competition.application.commands.create_competition_command import CreateCo
 from competition.application.commands.delete_competition_command import DeleteCompetitionCommand
 from competition.application.commands.join_competition_command import JoinCompetitionCommand
 from competition.application.commands.submit_answer_command import SubmitAnswerCommand
+from competition.application.commands.update_competition_command import UpdateCompetitionCommand
 from competition.application.handlers.create_competition_handler import CreateCompetitionHandler
 from competition.application.handlers.delete_competition_handler import DeleteCompetitionHandler
 from competition.application.handlers.join_competition_handler import JoinCompetitionHandler
 from competition.application.handlers.submit_answer_handler import SubmitAnswerHandler
+from competition.application.handlers.update_competition_handler import UpdateCompetitionHandler
 from competition.application.services.competition_service import CompetitionService
 
 from competition.infrastructure.persistence.database import SessionLocal
@@ -40,6 +43,13 @@ class SubmitAnswerRequest(BaseModel):
     competition_id: int
     answer: str
     time_taken: int
+
+class UpdateCompetitionRequest(BaseModel):
+    competition_id: int
+    name: str
+    start_date: datetime
+    number_of_exercises: int
+    password: Optional[str] = None
 
 # Dependencia para la base de datos
 def get_db():
@@ -121,3 +131,23 @@ def submit_answer(request: SubmitAnswerRequest, service: CompetitionService = De
         return {"message": "Answer submitted successfully"}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+@router.put("/update-competition", response_model=dict)
+def update_competition(request: UpdateCompetitionRequest, service: CompetitionService = Depends(get_competition_service),current_user: int = Depends(get_current_user)):
+    command = UpdateCompetitionCommand(
+        competition_id=request.competition_id,
+        name=request.name,
+        start_date=datetime.utcnow(),
+        number_of_exercises=request.number_of_exercises,
+        password=request.password,
+        creator_id = current_user
+    )
+    handler = UpdateCompetitionHandler(service)
+    try:
+        handler.handle(command)
+        return {"message": "Competition updated successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+    except PermissionError:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="Only the creator can update this competition")
