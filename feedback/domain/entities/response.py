@@ -2,7 +2,7 @@ from typing import Optional
 
 
 class Response:
-    def __init__(self, id: int, participant_id: int, challenge_id: int, answer: str, time_taken: str, feedback: Optional['Feedback'] = None):
+    def __init__(self, id: int, participant_id: int, challenge_id: int, answer: str, time_taken: str, feedback: str = None):
         self.id = id                          # ID de la respuesta
         self.participant_id = participant_id  # ID del participante que respondió
         self.challenge_id = challenge_id      # ID del desafío al que pertenece la pregunta

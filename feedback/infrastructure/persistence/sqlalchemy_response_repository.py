@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, List, Type
 
 from feedback.domain.repositories.response_repository import ResponseRepository
-from feedback.infrastructure.persistence.models import ResponseModel
+from feedback.infrastructure.persistence.models import ResponseModel, ParticipantModel
 from feedback.domain.entities.response import Response  # Suponiendo que esta entidad está definida en el dominio
 
 class SQLAlchemyResponseRepository(ResponseRepository):
@@ -38,13 +38,28 @@ class SQLAlchemyResponseRepository(ResponseRepository):
                     response_model.score = response.feedback.score
                 self.session.commit()
 
-    def find_by_id(self, response_id: int) -> Optional[ResponseModel]:
-        """Encuentra la respuesta por su ID"""
-        return self.session.query(ResponseModel).filter_by(id=response_id).first()
+    def find_by_id(self, participant_id: int) -> list[Type[ResponseModel]]:
+        """Encuentra todas las respuestas por el ID del participante y devuelve una lista."""
+        return self.session.query(ResponseModel).filter(ResponseModel.participant_id == participant_id).all()
 
     def delete(self, response_id: int) -> None:
         """Elimina una respuesta de la base de datos"""
         response = self.find_by_id(response_id)
         if response:
             self.session.delete(response)
+            self.session.commit()
+    def update_response_with_feedback(self, participant_id: int, feedback: str, is_correct: bool)-> None:
+        """Actualiza una respuesta con la retroalimentación generada"""
+        response = self.session.query(ResponseModel).filter_by(participant_id=participant_id).first()
+        if response:
+            response.feedback = feedback
+            response.is_correct = is_correct
+            self.session.commit()
+
+    def update_score(self, participant_id: int, scores: list[int])-> None:
+        """Actualiza el puntaje de una respuesta"""
+        response = self.session.query(ParticipantModel).filter_by(id=participant_id).first()
+        total_score = sum(scores)
+        if response:
+            response.score = total_score
             self.session.commit()

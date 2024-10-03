@@ -2,7 +2,8 @@ from typing import Optional
 
 
 class Feedback:
-    def __init__(self, response_id: int, is_correct: bool, detail: str, score: int, analyzed_at: Optional[str] = None):
+    def __init__(self, id: int, response_id: int, is_correct: bool, detail: str, score: int, analyzed_at: Optional[str] = None):
+        self.id = id
         self.response_id = response_id            # ID de la respuesta a la que pertenece la retroalimentación
         self.is_correct = is_correct              # Indica si la respuesta es correcta
         self.detail = detail                  # Retroalimentación detallada

@@ -7,5 +7,5 @@ class AnalyzeResponseHandler:
 
     def handle(self, command: AnalyzeResponseCommand):
         # Llama al servicio para generar la retroalimentación
-        feedback = self.feedback_service.generate_feedback(command.response_id)
+        feedback = self.feedback_service.generate_feedback(command.participant_id)
         return feedback

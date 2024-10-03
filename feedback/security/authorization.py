@@ -1,9 +1,10 @@
+from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
 from jose import jwt, JWTError
 from fastapi.security import OAuth2PasswordBearer
 from typing import Optional
 
-from competition.security.authentication import ALGORITHM, SECRET_KEY
+from feedback.security.authentication import SECRET_KEY, ALGORITHM
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 

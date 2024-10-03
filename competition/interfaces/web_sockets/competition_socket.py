@@ -12,7 +12,7 @@ from competition.infrastructure.persistence.sqlalchemy_answer_repository import 
 from competition.infrastructure.persistence.sqlalchemy_competition_repository import SQLAlchemyCompetitionRepository
 from competition.infrastructure.persistence.sqlalchemy_participant_repository import SQLAlchemyParticipantRepository
 from competition.infrastructure.real_time.socket_manager import ConnectionManager
-from competition.security.authorization import get_current_user
+from competition.security.authorization import get_current_user, get_current_username
 
 router = APIRouter()
 manager = ConnectionManager()
@@ -37,6 +37,7 @@ async def competition_websocket(websocket: WebSocket, competition_id: int, servi
     try:
         # Validar el token y obtener el usuario actual
         current_user = get_current_user(token)
+        current_username = get_current_username(token)
     except HTTPException:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
         return
@@ -81,6 +82,15 @@ async def competition_websocket(websocket: WebSocket, competition_id: int, servi
                 except Exception as e:
                     # Enviar un mensaje de error al usuario si algo falla
                     await websocket.send_text(f"Error al enviar la respuesta: {str(e)}")
+
+            elif data.startswith("chat_message"):
+                message_content = data[len("chat_message"):]  # Extraer el contenido del mensaje
+                chat_message = {
+                    "user": current_username,  # Asegúrate de que `username` sea el atributo correcto
+                    "message": message_content
+                }
+                chat_message_json = json.dumps(chat_message)
+                await manager.broadcast(chat_message_json)  # Enviar el mensaje a todos los participantes
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)

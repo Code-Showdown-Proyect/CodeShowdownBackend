@@ -9,12 +9,14 @@ from feedback.infrastructure.persistence.sqlalchemy_feedback_repository import S
 from feedback.infrastructure.persistence.sqlalchemy_response_repository import SQLAlchemyResponseRepository
 from pydantic import BaseModel
 
+from feedback.security.authorization import get_current_user
+
 router = APIRouter()
 
 
 # Clase para solicitar el análisis de una respuesta
 class AnalyzeResponseRequest(BaseModel):
-    response_id: int
+    participant_id: int
 
 # Dependencia para la base de datos
 def get_db():
@@ -37,17 +39,25 @@ def get_feedback_service():
 # Endpoint para generar la retroalimentación para una respuesta específica
 @router.post("/analyze-response", response_model=dict)
 def analyze_response(request: AnalyzeResponseRequest, service: FeedbackService = Depends(get_feedback_service)):
-    command = AnalyzeResponseCommand(response_id=request.response_id)
+    command = AnalyzeResponseCommand(participant_id=request.participant_id)
     handler = AnalyzeResponseHandler(service)
     try:
-        feedback = handler.handle(command)
-        return {
-            "message": "Feedback generated successfully",
-            "feedback_id": feedback.id,
-            "content": feedback.content,
-            "is_correct": feedback.is_correct,
-            "score": feedback.score
-        }
+        feedbacks = handler.handle(command)
+        if feedbacks:
+            return {
+                "message": "Feedback generated successfully",
+                "feedbacks": [
+                    {
+                        "feedback_id": feedback.id,  # Asegúrate de que este atributo existe
+                        "content": feedback.detail,  # Cambia a detail si es necesario
+                        "is_correct": feedback.is_correct,
+                        "score": feedback.score
+                    }
+                    for feedback in feedbacks
+                ]
+            }
+        else:
+            raise ValueError("No feedback generated.")
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
     except Exception as e:
