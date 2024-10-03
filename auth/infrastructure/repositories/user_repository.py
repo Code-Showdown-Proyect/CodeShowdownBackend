@@ -23,6 +23,19 @@ class SQLAlchemyUserRepository(UserRepository):
             )
         return None
 
+    def find_by_id(self, user_id: int) -> User:
+        user_record = self.session.query(UserModel).filter(UserModel.id == user_id).first()
+        if user_record:
+            return User(
+                id=user_record.id,
+                username=user_record.username,
+                email=user_record.email,
+                password=user_record.password,
+                role=user_record.role,
+                created_at=user_record.created_at
+            )
+        return None
+
     def create(self, user: User) -> None:
         user_model = UserModel(
             username=user.username,

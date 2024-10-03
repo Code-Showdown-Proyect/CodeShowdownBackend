@@ -93,6 +93,19 @@ def update_username(request: UpdateUsernameRequest, handler: RegisterUserHandler
     return {"message": "Username updated successfully", "new_username": updated_user.username}
 
 
+@router.get("/users/{user_id}", response_model=dict)
+def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
+    user_repository = SQLAlchemyUserRepository(db)
+    user = user_repository.find_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return {
+        "user_id": user.id,
+        "username": user.username,
+        "email": user.email
+    }
+
 @router.delete("/delete-user", response_model=dict)
 def delete_user(request: DeleteUserRequest, handler: RegisterUserHandler = Depends(get_register_user_handler)):
     email_obj = Email(request.email)
