@@ -5,14 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: feedback implemented">
+      <change afterPath="$PROJECT_DIR$/cs_statistics/application/commands/statistics_commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/application/handlers/statistics_handlers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/application/services/statistics_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/domain/entities/statistics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/domain/repositories/statistics_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/domain/value_objects/statistics_value_objects.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/infrastructure/database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/infrastructure/external/feedback_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/infrastructure/external/profile_client.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/infrastructure/persistence/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/infrastructure/persistence/statistics_repository.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cs_statistics/interfaces/rest/statistics_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/fastApiProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fastApiProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/application/services/feedback_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/application/services/feedback_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/domain/repositories/response_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/domain/repositories/response_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/infrastructure/external/chatgpt_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/infrastructure/external/chatgpt_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/infrastructure/persistence/sqlalchemy_response_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/infrastructure/persistence/sqlalchemy_response_repository.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +79,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\CodeShowdown\CodeShowdownBackend\cs_statistics\domain\entities" />
+      <recent name="D:\CodeShowdown\CodeShowdownBackend\cs_statistics\domain" />
+      <recent name="D:\CodeShowdown\CodeShowdownBackend\statistics\domain\entities" />
       <recent name="D:\CodeShowdown\CodeShowdownBackend\Auth\domain" />
       <recent name="D:\CodeShowdown\CodeShowdownBackend" />
     </key>
