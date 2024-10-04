@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from user_profile.application.services.user_profile_service import UserProfileService
 from user_profile.infrastructure.database import SessionLocal
 from user_profile.infrastructure.persistence.sqlalchemy_profile_repository import SQLAlchemyUserProfileRepository
+from user_profile.security.authorization import get_current_user
 
 router = APIRouter()
 
@@ -15,6 +16,7 @@ class CreateProfileRequest(BaseModel):
     profile_picture_url: Optional[str] = None
 
 class UserProfileResponse(BaseModel):
+    profile_id: int
     user_id: int
     first_name: Optional[str] = None
     last_name: Optional[str] = None
@@ -33,11 +35,11 @@ def get_profile_service(db: Session = Depends(get_db)):
     profile_repository = SQLAlchemyUserProfileRepository(db)
     return UserProfileService(profile_repository)
 
-@router.post("/profiles", response_model=dict)
-def create_profile(request: CreateProfileRequest, user_id: int, service: UserProfileService = Depends(get_profile_service)):
+@router.post("/create-profile", response_model=dict)
+def create_profile(request: CreateProfileRequest, service: UserProfileService = Depends(get_profile_service), current_user_id: int = Depends(get_current_user)):
     try:
         profile = service.create_profile(
-            user_id=user_id,
+            user_id=current_user_id,
             first_name=request.first_name,
             last_name=request.last_name,
             description=request.description,
@@ -47,11 +49,11 @@ def create_profile(request: CreateProfileRequest, user_id: int, service: UserPro
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-@router.put("/profiles/{user_id}", response_model=dict)
-def update_profile(user_id: int, request: CreateProfileRequest, service: UserProfileService = Depends(get_profile_service)):
+@router.put("/update-profile", response_model=dict)
+def update_profile(request: CreateProfileRequest, service: UserProfileService = Depends(get_profile_service), current_user_id: int = Depends(get_current_user)):
     try:
         service.update_profile(
-            user_id=user_id,
+            user_id=current_user_id,
             first_name=request.first_name,
             last_name=request.last_name,
             description=request.description,
@@ -61,13 +63,14 @@ def update_profile(user_id: int, request: CreateProfileRequest, service: UserPro
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
-@router.get("/profiles/{user_id}", response_model=UserProfileResponse)
-def get_profile(user_id: int, service: UserProfileService = Depends(get_profile_service)):
+@router.get("/profile", response_model=UserProfileResponse)
+def get_profile(service: UserProfileService = Depends(get_profile_service), current_user_id: int = Depends(get_current_user)):
     try:
-        profile = service.profile_repository.find_by_user_id(user_id)
+        profile = service.profile_repository.find_by_user_id(current_user_id)
         if not profile:
             raise ValueError("Profile not found")
         return UserProfileResponse(
+            profile_id=profile.id,
             user_id=profile.user_id,
             first_name=profile.first_name,
             last_name=profile.last_name,
@@ -77,10 +80,13 @@ def get_profile(user_id: int, service: UserProfileService = Depends(get_profile_
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
 
-@router.delete("/profiles/{user_id}", response_model=dict)
-def delete_profile(user_id: int, service: UserProfileService = Depends(get_profile_service)):
+@router.delete("/delete-profile", response_model=dict)
+def delete_profile(service: UserProfileService = Depends(get_profile_service), current_user_id: int = Depends(get_current_user)):
+    profile = service.profile_repository.find_by_user_id(current_user_id)
+    if not profile:
+        raise ValueError("Profile not found")
     try:
-        service.profile_repository.delete(user_id)
+        service.profile_repository.delete(profile)
         return {"message": "Profile deleted successfully"}
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
