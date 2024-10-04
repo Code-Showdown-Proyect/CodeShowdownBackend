@@ -4,25 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: websocket endpoint implemented">
-      <change afterPath="$PROJECT_DIR$/feedback/security/authentication.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/feedback/security/authorization.py" afterDir="false" />
+    <list default="true" id="47fb4d4b-ca68-4a72-b545-e7030e5e554f" name="Changes" comment="feat: feedback implemented">
+      <change beforePath="$PROJECT_DIR$/.idea/fastApiProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fastApiProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth/application/handlers.py" beforeDir="false" afterPath="$PROJECT_DIR$/auth/application/handlers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/challenge/infrastructure/external/chatgpt_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/competition/interfaces/web_sockets/competition_socket.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/interfaces/web_sockets/competition_socket.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/competition/security/authorization.py" beforeDir="false" afterPath="$PROJECT_DIR$/competition/security/authorization.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/application/commands/analyze_response_command.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/application/commands/analyze_response_command.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/application/handlers/analyze_response_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/application/handlers/analyze_response_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feedback/application/services/feedback_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/application/services/feedback_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/domain/entities/feedback.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/domain/entities/feedback.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/domain/entities/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/domain/entities/response.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feedback/domain/repositories/response_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/domain/repositories/response_repository.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feedback/infrastructure/external/chatgpt_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/infrastructure/external/chatgpt_client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/infrastructure/persistence/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/infrastructure/persistence/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/feedback/infrastructure/persistence/sqlalchemy_response_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/infrastructure/persistence/sqlalchemy_response_repository.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/feedback/interfaces/rest/feedback_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/feedback/interfaces/rest/feedback_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +37,12 @@
     &quot;assignee&quot;: &quot;koliva1997&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Code-Showdown-Proyect/CodeShowdownBackend.git",
-    "accountId": "4af7d33a-f7db-4eff-b8d5-cf84ab2f8102"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Code-Showdown-Proyect/CodeShowdownBackend.git&quot;,
+    &quot;accountId&quot;: &quot;4af7d33a-f7db-4eff-b8d5-cf84ab2f8102&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -62,24 +52,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "FastAPI.fastApiProject.executor": "Run",
-    "Python.contraseña.executor": "Run",
-    "Python.main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;FastAPI.fastApiProject.executor&quot;: &quot;Run&quot;,
+    &quot;Python.contraseña.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\CodeShowdown\CodeShowdownBackend\Auth\domain" />
@@ -131,7 +121,8 @@
       <workItem from="1727795248668" duration="5387000" />
       <workItem from="1727885450955" duration="635000" />
       <workItem from="1727886103454" duration="1649000" />
-      <workItem from="1727969130421" duration="22576000" />
+      <workItem from="1727969130421" duration="22830000" />
+      <workItem from="1728017364632" duration="3142000" />
     </task>
     <task id="LOCAL-00001" summary="Se crearon las clases para el contexto de Auth">
       <option name="closed" value="true" />
@@ -285,7 +276,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727910887535</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="feat: feedback implemented">
+      <option name="closed" value="true" />
+      <created>1727994316756</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1727994316756</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,10 +314,11 @@
     <MESSAGE value="feat: submit_answers updated" />
     <MESSAGE value="feat: endpoint challenge-by-competition-id implemented" />
     <MESSAGE value="feat: websocket endpoint implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: websocket endpoint implemented" />
+    <MESSAGE value="feat: feedback implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: feedback implemented" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727994179568" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/CodeShowdownBackend$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1728020363222" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$contraseña.coverage" NAME="contraseña Coverage Results" MODIFIED="1727653915852" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Auth/application" />
     <SUITE FILE_PATH="coverage/fastApiProject$fastApiProject.coverage" NAME="fastApiProject Coverage Results" MODIFIED="1727125328400" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/CodeShowdownBackend$main.coverage" NAME="main Coverage Results" MODIFIED="1727653108263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

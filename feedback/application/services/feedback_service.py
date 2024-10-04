@@ -25,7 +25,8 @@ class FeedbackService:
                 is_correct = False
                 score = 0
             else:
-                feedback_detail = self.chatgpt_client.generate_feedback(resp.answer)
+                question = self.response_repository.find_question_by_id(resp.challenge_id)
+                feedback_detail = self.chatgpt_client.generate_feedback(resp.answer,question.description)
                 is_correct = self._evaluate_correctness(feedback_detail["conclusion"])
                 score = feedback_detail["score"]
 

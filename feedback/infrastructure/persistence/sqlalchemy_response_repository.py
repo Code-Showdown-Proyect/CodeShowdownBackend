@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from typing import Optional, List, Type
 
 from feedback.domain.repositories.response_repository import ResponseRepository
-from feedback.infrastructure.persistence.models import ResponseModel, ParticipantModel
+from feedback.infrastructure.persistence.models import ResponseModel, ParticipantModel, ChallengeModel
 from feedback.domain.entities.response import Response  # Suponiendo que esta entidad está definida en el dominio
 
 class SQLAlchemyResponseRepository(ResponseRepository):
@@ -63,3 +63,8 @@ class SQLAlchemyResponseRepository(ResponseRepository):
         if response:
             response.score = total_score
             self.session.commit()
+
+    def find_question_by_id(self, challenge_id: int )-> Type[ChallengeModel] | None:
+        """Encuentra la pregunta por su ID"""
+        question = self.session.query(ChallengeModel).filter_by(id=challenge_id).first()
+        return question

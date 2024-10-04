@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, List
 
 from feedback.domain.entities.response import Response
+from feedback.infrastructure.persistence.models import ChallengeModel
 
 
 class ResponseRepository(ABC):
@@ -26,4 +27,8 @@ class ResponseRepository(ABC):
         pass
     @abstractmethod
     def update_score(self, participant_id: int, score: list[int])-> None:
+        pass
+
+    @abstractmethod
+    def find_question_by_id(self, challenge_id: int)-> ChallengeModel:
         pass
