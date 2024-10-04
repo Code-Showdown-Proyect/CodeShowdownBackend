@@ -1,9 +1,9 @@
 from typing import Optional
 
 class UserProfile:
-    def __init__(self, id: int, user_id: int, first_name: Optional[str] = None, last_name: Optional[str] = None,
+    def __init__(self, profile_id: int  , user_id: int, first_name: Optional[str] = None, last_name: Optional[str] = None,
                  description: Optional[str] = None, profile_picture_url: Optional[str] = None):
-        self.id = id  # ID único del perfil del usuario
+        self.id = profile_id
         self.user_id = user_id  # ID del usuario al que pertenece este perfil
         self.first_name = first_name  # Nombre del usuario (opcional)
         self.last_name = last_name  # Apellido del usuario (opcional)

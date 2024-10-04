@@ -4,12 +4,10 @@ from jose import jwt, JWTError
 from typing import Optional
 from datetime import datetime, timedelta
 
+from user_profile.security.authentication import SECRET_KEY, ALGORITHM
+
 # Definir la URL del token para obtenerlo en las dependencias de seguridad
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
-
-# Llaves secretas y algoritmos para el JWT
-SECRET_KEY = "your_secret_key"
-ALGORITHM = "HS256"
 
 # Función para obtener el usuario actual del token
 def get_current_user(token: str = Depends(oauth2_scheme)) -> int:
