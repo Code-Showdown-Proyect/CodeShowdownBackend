@@ -1,6 +1,8 @@
 import json
+from collections import defaultdict
 from http.client import HTTPException
 
+import httpx
 from fastapi import WebSocket, WebSocketDisconnect, Depends, APIRouter
 from starlette import status
 
@@ -16,6 +18,8 @@ from competition.security.authorization import get_current_user, get_current_use
 
 router = APIRouter()
 manager = ConnectionManager()
+responses_count = defaultdict(int)  # Cantidad de respuestas recibidas por desafío para cada competencia
+participant_progress = defaultdict(dict)  # Progreso de cada participante
 
 
 # Dependency to get the competition service
@@ -31,8 +35,8 @@ def get_competition_service():
 
 
 @router.websocket("/competition/{competition_id}")
-async def competition_websocket(websocket: WebSocket, competition_id: int, service: CompetitionService = Depends(get_competition_service)):
-    global challenge_message
+async def competition_websocket(websocket: WebSocket, competition_id: int,
+                                service: CompetitionService = Depends(get_competition_service)):
     token = websocket.headers.get("Authorization")
     try:
         # Validar el token y obtener el usuario actual
@@ -41,57 +45,100 @@ async def competition_websocket(websocket: WebSocket, competition_id: int, servi
     except HTTPException:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
         return
+
     await websocket.accept()
+
     try:
         participant = service.participant_repository.find_by_user_and_competition(current_user, competition_id)
-        print("Resultado de find_by_user_and_competition:", participant)
         if not participant:
             await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
             return
+
         await manager.connect(websocket)
+
+        # Inicializar el progreso del participante si no está registrado
+        if participant.id not in participant_progress[competition_id]:
+            competition = service.get_competition_by_id(competition_id)
+            challenges_list = service.competition_repository.get_challenges_by_competition_id(competition_id)
+            participant_progress[competition_id][participant.id] = {
+                "challenges": challenges_list,  # Lista de desafíos de la competencia
+                "current_index": 0,  # Índice del desafío actual
+                "completed_challenges": 0  # Número de desafíos completados por el participante
+            }
+
         while True:
             data = await websocket.receive_text()
-            # Enviar desafío a todos los participantes cuando se inicie la competencia
+
+            # Enviar el primer desafío a todos los participantes al iniciar la competencia
             if data == "start_competition":
-                competition = service.get_competition_by_id(competition_id)
-                # Aquí se asume que el servicio genera los desafíos y devuelve el primero
-                first_challenge = await service.generate_first_challenge(competition_id)
+                # Obtener el primer desafío
+                first_challenge = participant_progress[competition_id][participant.id]["challenges"][0]
                 challenge_message = {
-                    "challenge_id": first_challenge["id"],
-                    "title": first_challenge["title"],
-                    "description": first_challenge["description"],
+                    "challenge_id": first_challenge.id,
+                    "title": first_challenge.title,
+                    "description": first_challenge.description,
+                    "difficulty": first_challenge.difficulty,
+                    "output_example": first_challenge.output_example,
                     "time_limit": competition.time_limit
                 }
-                challenge_message_json = json.dumps(challenge_message)
-                # Enviar el desafío a todos los participantes conectados a la competencia
-                await manager.broadcast(challenge_message_json)
+                # Enviar el primer desafío a todos los participantes conectados
+                await manager.broadcast(json.dumps(challenge_message))
 
-            # Recibir respuestas de los usuarios
             elif data.startswith("submit_answer"):
                 # Extraer la información de la respuesta
-                participant_id = service.participant_repository.find_by_user_and_competition(current_user, competition_id).id
-                time_taken = 0
-                exercise_id = challenge_message["challenge_id"]
                 answer_data = data[len("submit_answer"):]
+                participant_data = participant_progress[competition_id][participant.id]
+                current_index = participant_data["current_index"]
+                current_challenge = participant_data["challenges"][current_index]
 
                 try:
                     # Aquí se envía la respuesta al servicio para almacenarla
-                    service.submit_answer(participant_id, competition_id, answer_data, time_taken, exercise_id)
-                    # Enviar un mensaje de confirmación al usuario
-                    await websocket.send_text("Respuesta enviada correctamente.")
+                    service.submit_answer(participant.id, competition_id, answer_data, 0, current_challenge.id)
+                    participant_data["completed_challenges"] += 1
+
+                    # Incrementar el contador de respuestas completadas para el desafío actual
+                    responses_count[(competition_id, current_index)] += 1
+
+                    # Verificar si todos los participantes han completado el desafío actual
+                    total_participants = service.participant_repository.count_by_competition(competition_id)
+                    if responses_count[(competition_id, current_index)] >= total_participants:
+                        # Todos los participantes han completado el desafío actual, avanzar al siguiente
+                        for p_id in participant_progress[competition_id]:
+                            participant_progress[competition_id][p_id]["current_index"] += 1
+
+                        # Verificar si hay un próximo desafío
+                        next_index = participant_progress[competition_id][participant.id]["current_index"]
+                        if next_index < len(participant_data["challenges"]):
+                            next_challenge = participant_data["challenges"][next_index]
+                            challenge_message = {
+                                "challenge_id": next_challenge.id,
+                                "title": next_challenge.title,
+                                "description": next_challenge.description,
+                                "difficulty": next_challenge.difficulty,
+                                "output_example": next_challenge.output_example
+                            }
+                            # Enviar el siguiente desafío a todos los participantes conectados
+                            await manager.broadcast(json.dumps(challenge_message))
+                        else:
+                            # Si todos los desafíos han sido completados
+                            await manager.broadcast(json.dumps({"action": "all_participants_done"}))
+                            break
+                    else:
+                        # Notificar al participante que debe esperar a que los demás terminen
+                        await websocket.send_text(
+                            "Esperando a que todos los participantes completen el desafío actual.")
+
                 except Exception as e:
                     # Enviar un mensaje de error al usuario si algo falla
                     await websocket.send_text(f"Error al enviar la respuesta: {str(e)}")
 
             elif data.startswith("chat_message"):
-                message_content = data[len("chat_message"):]  # Extraer el contenido del mensaje
+                message_content = data[len("chat_message"):]
                 chat_message = {
-                    "user": current_username,  # Asegúrate de que `username` sea el atributo correcto
+                    "user": current_username,
                     "message": message_content
                 }
-                chat_message_json = json.dumps(chat_message)
-                await manager.broadcast(chat_message_json)  # Enviar el mensaje a todos los participantes
+                await manager.broadcast(json.dumps(chat_message))
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-

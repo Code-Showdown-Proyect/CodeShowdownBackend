@@ -1,8 +1,9 @@
-from typing import Optional, List
+from typing import Optional, List, Type
 from sqlalchemy.orm import Session
 from competition.domain.entities.competition import Competition
 from competition.domain.repositories.competition_repository import CompetitionRepository
-from competition.infrastructure.persistence.models import CompetitionModel
+from competition.infrastructure.persistence.models import CompetitionModel, ChallengeModel
+
 
 class SQLAlchemyCompetitionRepository(CompetitionRepository):
     def __init__(self, session: Session):
@@ -113,3 +114,6 @@ class SQLAlchemyCompetitionRepository(CompetitionRepository):
             access_code=model.access_code,
             password=model.password
         )
+    def get_challenges_by_competition_id(self, competition_id)-> list[Type[ChallengeModel]]:
+        challenges = self.session.query(ChallengeModel).filter_by(competition_id=competition_id).all()
+        return challenges
