@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 from competition.domain.entities.competition import Competition
-from competition.infrastructure.persistence.models import ChallengeModel
+from competition.infrastructure.persistence.models import ChallengeModel, AnswerModel
 
 
 class CompetitionRepository(ABC):
@@ -31,4 +31,7 @@ class CompetitionRepository(ABC):
         pass
     @abstractmethod
     def get_challenges_by_competition_id(self, competition_id)->List[ChallengeModel]:
+        pass
+    @abstractmethod
+    def get_feedbacks_by_participant(self, participant_id)->List[AnswerModel]:
         pass

@@ -21,6 +21,8 @@ manager = ConnectionManager()
 responses_count = defaultdict(int)  # Cantidad de respuestas recibidas por desafío para cada competencia
 participant_progress = defaultdict(dict)  # Progreso de cada participante
 
+completed_participants = set()  # Conjunto de participantes que han completado la competencia
+FEEDBACK_SERVICE_URL = "http://127.0.0.1:8000/feedback/analyze-response"
 
 # Dependency to get the competition service
 def get_competition_service():
@@ -122,7 +124,8 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
                         else:
                             # Si todos los desafíos han sido completados
                             await manager.broadcast(json.dumps({"action": "all_participants_done"}))
-                            break
+                            await analyze_responses_for_all_participants(competition_id, websocket)
+                            await analyze_feedback_for_all_participants(competition_id, current_user, websocket, service)
                     else:
                         # Notificar al participante que debe esperar a que los demás terminen
                         await websocket.send_text(
@@ -142,3 +145,60 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+
+async def analyze_responses_for_all_participants(competition_id: int, websocket: WebSocket):
+
+    participants = participant_progress[competition_id].keys()
+
+    for participant_id in participants:
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                response = await client.post(
+                    FEEDBACK_SERVICE_URL,
+                    json={"participant_id": participant_id}
+                )
+                response.raise_for_status()
+        except httpx.HTTPStatusError as e:
+            await websocket.send_text(f"Error al analizar las respuestas: {e.response.status_code} {e.response.text}")
+        except Exception as e:
+            import traceback
+            traceback_message = traceback.format_exc()  # Obtener la traza del error
+            await websocket.send_text(
+                f"Error desconocido al analizar las respuestas: {str(e)}. Traceback: {traceback_message}")
+
+
+async def analyze_feedback_for_all_participants(competition_id: int, current_user: int, websocket: WebSocket, service: CompetitionService = Depends(get_competition_service)):
+
+    participants = participant_progress[competition_id].keys()
+    feedback_messages = []
+
+    # Recopilar los feedbacks de todos los participantes desde la base de datos
+    for participant_id in participants:
+        try:
+            feedbacks = service.competition_repository.get_feedbacks_by_participant(participant_id)
+            challenges_list = service.competition_repository.get_challenges_by_competition_id(competition_id)
+
+            # Relacionar feedbacks con sus desafíos correspondientes
+            feedback_message = {
+                "participant_id": participant_id,
+                "feedbacks": []
+            }
+            for challenge in challenges_list:
+                for feedback in feedbacks:
+                    if feedback.challenge_id == challenge.id:
+                        feedback_message["feedbacks"].append({
+                            "challenge_title": challenge.title,
+                            "feedback": feedback.feedback,
+                            "score": service.participant_repository.find_by_user_and_competition(current_user, competition_id).score
+                        })
+                        break
+
+            feedback_messages.append(feedback_message)
+
+        except Exception as e:
+            await websocket.send_text(f"Error al recopilar feedbacks: {str(e)}")
+
+    # Enviar los mensajes de feedback a todos los participantes conectados
+    for feedback_message in feedback_messages:
+        await manager.broadcast(json.dumps(feedback_message))

@@ -2,7 +2,7 @@ from typing import Optional, List, Type
 from sqlalchemy.orm import Session
 from competition.domain.entities.competition import Competition
 from competition.domain.repositories.competition_repository import CompetitionRepository
-from competition.infrastructure.persistence.models import CompetitionModel, ChallengeModel
+from competition.infrastructure.persistence.models import CompetitionModel, ChallengeModel, AnswerModel
 
 
 class SQLAlchemyCompetitionRepository(CompetitionRepository):
@@ -117,3 +117,7 @@ class SQLAlchemyCompetitionRepository(CompetitionRepository):
     def get_challenges_by_competition_id(self, competition_id)-> list[Type[ChallengeModel]]:
         challenges = self.session.query(ChallengeModel).filter_by(competition_id=competition_id).all()
         return challenges
+
+    def get_feedbacks_by_participant(self, participant_id)-> list[Type[AnswerModel]]:
+        feedbacks = self.session.query(AnswerModel).filter_by(participant_id=participant_id).all()
+        return feedbacks
