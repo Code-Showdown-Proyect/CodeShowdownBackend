@@ -66,3 +66,7 @@ class SQLAlchemyParticipantRepository(ParticipantRepository):
         if not participant_model:
             return None
         return self._to_entity(participant_model)
+
+
+    def count_by_competition(self, competition_id):
+        return self.session.query(ParticipantModel).filter_by(competition_id=competition_id).count()

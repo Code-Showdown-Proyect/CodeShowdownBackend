@@ -51,6 +51,10 @@ class SQLAlchemyResponseRepository(ResponseRepository):
     def update_response_with_feedback(self, participant_id: int, feedback: str, is_correct: bool)-> None:
         """Actualiza una respuesta con la retroalimentación generada"""
         response = self.session.query(ResponseModel).filter_by(participant_id=participant_id).first()
+        # Verificar si se encontró la respuesta
+        if response is None:
+            print(f"No se encontró ninguna respuesta para el participante con id {participant_id}")
+            return  # Podrías manejarlo de otra manera, como lanzar una excepción o registrar un log
         if response:
             response.feedback = feedback
             response.is_correct = is_correct

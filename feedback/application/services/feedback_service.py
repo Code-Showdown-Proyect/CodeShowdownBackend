@@ -31,7 +31,7 @@ class FeedbackService:
                 score = feedback_detail["score"]
 
             # Actualizar la respuesta con la retroalimentación
-            self.response_repository.update_response_with_feedback(resp.id, feedback_detail["feedback"], is_correct)
+            self.response_repository.update_response_with_feedback(participant_id, feedback_detail["feedback"], is_correct)
             # Crear la entidad Feedback
             feedback = Feedback(
                 id=None,
