@@ -46,7 +46,7 @@ from competition.interfaces.web_sockets.competition_socket import router as comp
 from competition.interfaces.rest.competition_controller import router as competition_controller_router
 from feedback.interfaces.rest.feedback_controller import router as feedback_controller_router
 from user_profile.interfaces.http.user_profile_controller import router as profile_controller_router
-
+from cs_statistics.interfaces.rest.statistics_controller import router as statistics_controller_router
 app = FastAPI()
 
 # Incluir las rutas de autenticación en la aplicación
@@ -56,6 +56,7 @@ app.include_router(competition_socket_router, prefix="/ws", tags=["websockets"])
 app.include_router(competition_controller_router, prefix="/competitions")
 app.include_router(feedback_controller_router, prefix="/feedback")
 app.include_router(profile_controller_router, prefix="/profile")
+app.include_router(statistics_controller_router, prefix="/statistics")
 
 if __name__ == "__main__":
     import uvicorn

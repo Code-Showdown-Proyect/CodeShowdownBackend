@@ -1,37 +1,26 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey, ARRAY
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
 
-from cs_statistics.infrastructure.database import Base
 
+Base = declarative_base()
 
-class CompetitionStatisticsModel(Base):
-    __tablename__ = 'competition_statistics'
+class UserStatisticsModel(Base):
+    __tablename__ = 'users_statistics'
 
+    # challenge stats
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     competitions_completed = Column(Integer, default=0)
     total_score = Column(Integer, default=0)
     average_time_per_competition = Column(Float, default=0.0)
     average_score_per_competition = Column(Float, default=0.0)
-    created_at = Column(DateTime, default=datetime.utcnow)
 
-class ChallengeStatisticsModel(Base):
-    __tablename__ = 'challenge_statistics'
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True)
-    challenge_id = Column(Integer, ForeignKey('challenges.id', ondelete='CASCADE'), nullable=False)
+    #challenge stats
     average_time_per_challenge = Column(Float, default=0.0)
     best_score = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    challenge_completed_count = Column(Integer, default=0)
 
-class FeedbackImprovementStatisticsModel(Base):
-    __tablename__ = 'feedback_improvement_statistics'
-
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True)
-    feedback_applied_count = Column(Integer, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
 
 class CompetitionModel(Base):
@@ -69,3 +58,11 @@ class ChallengeModel(Base):
     output_example = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+class UserProfileModel(Base):
+    __tablename__ = 'profiles'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    profile_picture_url = Column(String, nullable=True)
+    description = Column(String, nullable=True)

@@ -1,37 +1,25 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 
-from cs_statistics.domain.entities.statistics import CompetitionStatistics, FeedbackImprovementStatistics, \
-    ChallengeStatistics
+from cs_statistics.domain.entities.statistics import UserStatistics
 
 
 class StatisticsRepository(ABC):
 
     @abstractmethod
-    def get_competition_statistics(self, user_id: int) -> CompetitionStatistics:
+    def get_user_statistics(self, user_id: int) -> Optional[UserStatistics]:
         """Obtiene las estadísticas de competencia para un usuario dado."""
         pass
 
     @abstractmethod
-    def get_challenge_statistics(self, user_id: int) -> ChallengeStatistics:
-        """Obtiene las estadísticas de desafío para un usuario dado."""
+    def save_user_statistics(self, stats: UserStatistics) -> UserStatistics:
+        """Obtiene las estadísticas de competencia para un usuario dado."""
         pass
-
     @abstractmethod
-    def get_feedback_statistics(self, user_id: int) -> FeedbackImprovementStatistics:
-        """Obtiene las estadísticas de mejora de retroalimentación para un usuario dado."""
+    def get_user_profile(self, user_id: int)-> dict:
+        """Obtiene los datos de un usuario."""
         pass
-
     @abstractmethod
-    def save_competition_statistics(self, stats: CompetitionStatistics) -> None:
-        """Guarda las estadísticas de competencia."""
-        pass
-
-    @abstractmethod
-    def save_challenge_statistics(self, stats: ChallengeStatistics) -> None:
-        """Guarda las estadísticas de desafío."""
-        pass
-
-    @abstractmethod
-    def save_feedback_statistics(self, stats: FeedbackImprovementStatistics) -> None:
-        """Guarda las estadísticas de retroalimentación."""
+    def update_user_statistics(self, stats: UserStatistics) -> None:
+        """Actualiza las estadísticas de competencia para un usuario."""
         pass

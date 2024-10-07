@@ -1,12 +1,16 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-DATABASE_URL = "postgresql://user:password@localhost/statistics_db"
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://avnadmin:AVNS_2MSqoAieULPkP2Kkg0J@cd-sd-skrak-34ad.b.aivencloud.com:28424/defaultdb")
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+# Crear el motor de conexión para PostgreSQL
+engine = create_engine(DATABASE_URL, echo=True)
+
+# Crear la clase base para los modelos ORM
 Base = declarative_base()
 
-def init_db():
-    Base.metadata.create_all(bind=engine)
+# Crear una sesión para interactuar con la base de datos
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
