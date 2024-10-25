@@ -1,5 +1,4 @@
 import json
-from collections import defaultdict
 from http.client import HTTPException
 
 import httpx
@@ -8,8 +7,6 @@ from starlette import status
 
 from competition.application.services.competition_service import CompetitionService
 from competition.infrastructure.persistence.database import SessionLocal
-from typing import Optional
-
 from competition.infrastructure.persistence.sqlalchemy_answer_repository import SQLAlchemyAnswerRepository
 from competition.infrastructure.persistence.sqlalchemy_competition_repository import SQLAlchemyCompetitionRepository
 from competition.infrastructure.persistence.sqlalchemy_participant_repository import SQLAlchemyParticipantRepository
@@ -18,10 +15,7 @@ from competition.security.authorization import get_current_user, get_current_use
 
 router = APIRouter()
 manager = ConnectionManager()
-responses_count = defaultdict(int)  # Cantidad de respuestas recibidas por desafío para cada competencia
-participant_progress = defaultdict(dict)  # Progreso de cada participante
 
-completed_participants = set()  # Conjunto de participantes que han completado la competencia
 FEEDBACK_SERVICE_URL = "http://127.0.0.1:8000/feedback/analyze-response"
 
 # Dependency to get the competition service
@@ -39,7 +33,8 @@ def get_competition_service():
 @router.websocket("/competition/{competition_id}")
 async def competition_websocket(websocket: WebSocket, competition_id: int,
                                 service: CompetitionService = Depends(get_competition_service)):
-    token = websocket.headers.get("Authorization")
+    token = websocket.cookies.get("access_token") #Pruebas con cookies
+    #token = websocket.headers.get("Authorization") #Pruebas Postman
     try:
         # Validar el token y obtener el usuario actual
         current_user = get_current_user(token)
@@ -49,20 +44,21 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
         return
 
     await websocket.accept()
-
+    print("Conexión establecida")
     try:
         participant = service.participant_repository.find_by_user_and_competition(current_user, competition_id)
         if not participant:
             await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
-            return
+        print("Participante encontrado")
+        await manager.connect(websocket, current_username, competition_id)
+        comp_data = manager.get_competition_data(competition_id)
 
-        await manager.connect(websocket)
 
         # Inicializar el progreso del participante si no está registrado
-        if participant.id not in participant_progress[competition_id]:
+        if participant.id not in comp_data['participant_progress']:
             competition = service.get_competition_by_id(competition_id)
             challenges_list = service.competition_repository.get_challenges_by_competition_id(competition_id)
-            participant_progress[competition_id][participant.id] = {
+            comp_data['participant_progress'][participant.id] = {
                 "challenges": challenges_list,  # Lista de desafíos de la competencia
                 "current_index": 0,  # Índice del desafío actual
                 "completed_challenges": 0  # Número de desafíos completados por el participante
@@ -70,26 +66,28 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
 
         while True:
             data = await websocket.receive_text()
-
+            print(f"Mensaje recibido: {data}")
             # Enviar el primer desafío a todos los participantes al iniciar la competencia
-            if data == "start_competition":
+            if data == "send_challenges":
                 # Obtener el primer desafío
-                first_challenge = participant_progress[competition_id][participant.id]["challenges"][0]
+                first_challenge = comp_data['participant_progress'][participant.id]["challenges"][0]
                 challenge_message = {
+                    "type": "new_challenge",
                     "challenge_id": first_challenge.id,
                     "title": first_challenge.title,
                     "description": first_challenge.description,
                     "difficulty": first_challenge.difficulty,
                     "output_example": first_challenge.output_example,
-                    "time_limit": competition.time_limit
+
                 }
                 # Enviar el primer desafío a todos los participantes conectados
-                await manager.broadcast(json.dumps(challenge_message))
+
+                await manager.broadcast(json.dumps(challenge_message), competition_id)
 
             elif data.startswith("submit_answer"):
                 # Extraer la información de la respuesta
                 answer_data = data[len("submit_answer"):]
-                participant_data = participant_progress[competition_id][participant.id]
+                participant_data = comp_data['participant_progress'][participant.id]
                 current_index = participant_data["current_index"]
                 current_challenge = participant_data["challenges"][current_index]
 
@@ -99,20 +97,21 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
                     participant_data["completed_challenges"] += 1
 
                     # Incrementar el contador de respuestas completadas para el desafío actual
-                    responses_count[(competition_id, current_index)] += 1
+                    comp_data['responses_count'][current_index]  += 1
 
                     # Verificar si todos los participantes han completado el desafío actual
                     total_participants = service.participant_repository.count_by_competition(competition_id)
-                    if responses_count[(competition_id, current_index)] >= total_participants:
+                    if comp_data['responses_count'][current_index] >= total_participants:
                         # Todos los participantes han completado el desafío actual, avanzar al siguiente
-                        for p_id in participant_progress[competition_id]:
-                            participant_progress[competition_id][p_id]["current_index"] += 1
+                        for p_id in comp_data['participant_progress']:
+                            comp_data['participant_progress'][p_id]["current_index"] += 1
 
                         # Verificar si hay un próximo desafío
-                        next_index = participant_progress[competition_id][participant.id]["current_index"]
+                        next_index = comp_data['participant_progress'][participant.id]["current_index"]
                         if next_index < len(participant_data["challenges"]):
                             next_challenge = participant_data["challenges"][next_index]
                             challenge_message = {
+                                "type": "new_challenge",
                                 "challenge_id": next_challenge.id,
                                 "title": next_challenge.title,
                                 "description": next_challenge.description,
@@ -120,16 +119,20 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
                                 "output_example": next_challenge.output_example
                             }
                             # Enviar el siguiente desafío a todos los participantes conectados
-                            await manager.broadcast(json.dumps(challenge_message))
+                            await manager.broadcast(json.dumps(challenge_message), competition_id)
                         else:
-                            # Si todos los desafíos han sido completados
-                            await manager.broadcast(json.dumps({"action": "all_participants_done"}))
+                            # Si todos los desafíos han sido completados}
+                            await manager.broadcast(json.dumps({"action": "all_participants_done"}), competition_id)
                             await analyze_responses_for_all_participants(competition_id, websocket)
-                            await analyze_feedback_for_all_participants(competition_id, current_user, websocket, service)
+                            await analyze_feedback_for_all_participants(competition_id,websocket, service)
                     else:
                         # Notificar al participante que debe esperar a que los demás terminen
-                        await websocket.send_text(
-                            "Esperando a que todos los participantes completen el desafío actual.")
+                        waiting_message = {
+                            "type": "status",
+                            "message": "Waiting_others"
+                        }
+                        print(f"Mensaje de espera: {waiting_message}")
+                        await websocket.send_text(json.dumps(waiting_message))
 
                 except Exception as e:
                     # Enviar un mensaje de error al usuario si algo falla
@@ -138,22 +141,43 @@ async def competition_websocket(websocket: WebSocket, competition_id: int,
             elif data.startswith("chat_message"):
                 message_content = data[len("chat_message"):]
                 chat_message = {
+                    "type":"chat_message",
                     "user": current_username,
                     "message": message_content
                 }
-                await manager.broadcast(json.dumps(chat_message))
+                print(f"Mensaje de chat: {chat_message}")
+                await manager.broadcast(json.dumps(chat_message), competition_id)
+
+            elif data.startswith("list_challenges"):
+                print("Listando desafíos", data)
+                challenges_list = service.competition_repository.get_challenges_by_competition_id(competition_id)
+                for participant_id in comp_data['participant_progress']:
+                    comp_data['participant_progress'][participant_id]["challenges"] = challenges_list
+
+                challenges = comp_data['participant_progress'][participant.id]["challenges"]
+                challenge_titles = [{"id": c.id, "title": c.title} for c in challenges]
+                challenge_list_message = {
+                    "type": "challenge_list",
+                    "challenges": challenge_titles
+                }
+                print(f"Lista de desafíos: {challenge_list_message}")
+                await manager.broadcast(json.dumps(challenge_list_message),competition_id)
+
+            elif data.startswith("start_competition"):
+                await manager.broadcast(json.dumps({"type": "start_competition"}), competition_id)
+            elif data.startswith("feedback_response"):
+                await analyze_feedback_for_all_participants(competition_id,websocket, service)
 
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        await manager.disconnect(websocket,competition_id)
 
 
 async def analyze_responses_for_all_participants(competition_id: int, websocket: WebSocket):
-
-    participants = participant_progress[competition_id].keys()
-
+    comp_data = manager.get_competition_data(competition_id)
+    participants = comp_data['participant_progress'].keys()
     for participant_id in participants:
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=60.0) as client:
                 response = await client.post(
                     FEEDBACK_SERVICE_URL,
                     json={"participant_id": participant_id}
@@ -168,17 +192,20 @@ async def analyze_responses_for_all_participants(competition_id: int, websocket:
                 f"Error desconocido al analizar las respuestas: {str(e)}. Traceback: {traceback_message}")
 
 
-async def analyze_feedback_for_all_participants(competition_id: int, current_user: int, websocket: WebSocket, service: CompetitionService = Depends(get_competition_service)):
-
-    participants = participant_progress[competition_id].keys()
+async def analyze_feedback_for_all_participants(competition_id: int, websocket: WebSocket, service: CompetitionService = Depends(get_competition_service)):
+    comp_data = manager.get_competition_data(competition_id)
+    participants = comp_data['participant_progress'].keys()
     feedback_messages = []
-
+    participant_list = service.participant_repository.list_by_competition(competition_id)
     # Recopilar los feedbacks de todos los participantes desde la base de datos
     for participant_id in participants:
         try:
             feedbacks = service.competition_repository.get_feedbacks_by_participant(participant_id)
             challenges_list = service.competition_repository.get_challenges_by_competition_id(competition_id)
-
+            participant = next((p for p in participant_list if p.id == participant_id), None)
+            participant_score = participant.score if participant else 0
+            for feedback in feedbacks:
+                print(f"Desafío: {feedback.feedback}")
             # Relacionar feedbacks con sus desafíos correspondientes
             feedback_message = {
                 "participant_id": participant_id,
@@ -186,19 +213,22 @@ async def analyze_feedback_for_all_participants(competition_id: int, current_use
             }
             for challenge in challenges_list:
                 for feedback in feedbacks:
+                    # Obtener la puntuación del participante actual, no del current_user
                     if feedback.challenge_id == challenge.id:
                         feedback_message["feedbacks"].append({
                             "challenge_title": challenge.title,
                             "feedback": feedback.feedback,
-                            "score": service.participant_repository.find_by_user_and_competition(current_user, competition_id).score
+                            "score": participant_score
                         })
-                        break
-
             feedback_messages.append(feedback_message)
 
         except Exception as e:
             await websocket.send_text(f"Error al recopilar feedbacks: {str(e)}")
 
     # Enviar los mensajes de feedback a todos los participantes conectados
-    for feedback_message in feedback_messages:
-        await manager.broadcast(json.dumps(feedback_message))
+    feedback_data = {
+        "type": "feedbacks",
+        "data": feedback_messages
+    }
+    print(f"Feedback data: {feedback_data}")
+    await manager.broadcast(json.dumps(feedback_data), competition_id)

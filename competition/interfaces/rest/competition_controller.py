@@ -3,6 +3,7 @@ from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import current_user
 
 from competition.application.commands.create_competition_command import CreateCompetitionCommand
 from competition.application.commands.delete_competition_command import DeleteCompetitionCommand
@@ -189,5 +190,53 @@ def update_status(request: UpdateStatus, service: CompetitionService = Depends(g
     try:
         service.update_status(request.competition_id, request.status)
         return {"message": "Status updated successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+@router.get("/get-competitions/{accessCode}", response_model=dict)
+def get_competitions_by_accessCode(accessCode: str, service: CompetitionService = Depends(get_competition_service)):
+    try:
+        competitions = service.get_competition_by_accessCode(accessCode)
+        return  {
+            "competition_id": competitions.id,
+            "name": competitions.name,
+            "number_of_exercises": competitions.number_of_exercises,
+            "time_limit": competitions.time_limit,
+            "creator_id": competitions.creator_id
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+@router.get("/get-participants/{competition_id}", response_model=dict)
+def get_participants(competition_id: int, service: CompetitionService = Depends(get_competition_service)):
+    try:
+        participants = service.get_participants(competition_id)
+        return {"participants": participants}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+@router.post("/leave-competition/{accessCode}", response_model=dict)
+def leave_competition(accessCode: str, service: CompetitionService = Depends(get_competition_service), current_user: int = Depends(get_current_user)):
+    try:
+
+        competition = service.get_competition_by_accessCode(accessCode)
+        print(current_user)
+        print(competition.id)
+        service.leave_competition(current_user,competition.id)
+
+        return {"message": "Participant left competition successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))
+
+@router.get("/get-participant/{user_id}/{competition_id}", response_model=dict)
+def get_participant_by_user_and_competition(user_id: int, competition_id: int, service: CompetitionService = Depends(get_competition_service)):
+    try:
+        participant = service.participant_repository.find_by_user_and_competition(user_id, competition_id)
+        return {
+            "participant_id": participant.id,
+            "user_id": participant.user_id,
+            "competition_id": participant.competition_id,
+            "score": participant.score,
+        }
     except ValueError as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

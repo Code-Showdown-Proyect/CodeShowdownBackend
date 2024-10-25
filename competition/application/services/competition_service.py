@@ -126,3 +126,19 @@ class CompetitionService:
 
     def generate_feedbacks(self, competition_id, creator_id)->list:
         pass
+
+    def get_competition_by_accessCode(self, accessCode)->Competition:
+        competition = self.competition_repository.find_by_access_code(accessCode)
+        return competition
+
+    def leave_competition(self, user_id, competition_id)->None:
+        participant = self.participant_repository.find_by_user_and_competition(user_id, competition_id)
+        if not participant:
+            raise ValueError("Participant not found")
+        if participant.competition_id != competition_id:
+            raise ValueError("Participant not in competition")
+        self.participant_repository.delete(participant.id)
+
+    def get_participants(self, competition_id):
+        participants = self.participant_repository.find_by_competition_id(competition_id)
+        return participants
