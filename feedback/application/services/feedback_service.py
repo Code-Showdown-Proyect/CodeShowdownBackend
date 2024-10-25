@@ -2,7 +2,7 @@ from feedback.domain.repositories.feedback_repository import FeedbackRepository
 from feedback.domain.repositories.response_repository import ResponseRepository
 from feedback.infrastructure.external.chatgpt_client import ChatGPTClient
 from feedback.domain.entities.feedback import Feedback
-from typing import Optional, List
+from typing import List
 
 
 class FeedbackService:
@@ -21,7 +21,7 @@ class FeedbackService:
         scores = []  # Para almacenar los puntajes
         for resp in response:
             if not resp.answer.strip():
-                feedback_detail = "No se proporcionó ninguna respuesta. Recuerda que participar y enviar tu solución es importante para recibir retroalimentación."
+                feedback_detail = {"feedback": "No se proporcionó ninguna respuesta. Recuerda que participar y enviar tu solución es importante para recibir retroalimentación."}
                 is_correct = False
                 score = 0
             else:
@@ -49,6 +49,4 @@ class FeedbackService:
         correctness_indicators = ["correcto", "bien hecho", "solución válida", "resolución correcta","Problema resuelto correctamente"]
         return any(indicator in feedback_detail.lower() for indicator in correctness_indicators)
 
-    def _calculate_score(self, feedback_detail):
-        return 100 if self._evaluate_correctness(feedback_detail) else 50
 
