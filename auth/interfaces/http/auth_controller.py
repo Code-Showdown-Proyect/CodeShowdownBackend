@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from auth.application.services import AuthService
 from auth.domain.value_objects import Email
@@ -8,13 +8,15 @@ from auth.application.commands import RegisterUserCommand, AuthenticateUserComma
 from auth.application.handlers import RegisterUserHandler, AuthenticateUserHandler
 from pydantic import BaseModel
 
+from auth.security.authorization import get_current_user
+
 router = APIRouter()
 
 class RegisterUserRequest(BaseModel):
     username: str
     email: str
     password: str
-    role: str
+    role: str|None
 
 class LoginRequest(BaseModel):
     email: str
@@ -66,7 +68,7 @@ def register(request: RegisterUserRequest, handler: RegisterUserHandler = Depend
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 @router.post("/login", response_model=dict)
-def login(request: LoginRequest, handler: AuthenticateUserHandler = Depends(get_authenticate_user_handler)):
+def login(request: LoginRequest, response: Response, handler: AuthenticateUserHandler = Depends(get_authenticate_user_handler)):
     command = AuthenticateUserCommand(
         email=request.email,
         password=request.password
@@ -74,6 +76,9 @@ def login(request: LoginRequest, handler: AuthenticateUserHandler = Depends(get_
     access_token = handler.handle(command)
     if not access_token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+
+    response.set_cookie(key="access_token", value=access_token, httponly=False, secure=True, samesite="none")
+
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.put("/update-password", response_model=dict)
@@ -123,3 +128,22 @@ def delete_user(request: DeleteUserRequest, handler: RegisterUserHandler = Depen
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
 
     return {"message": "User deleted successfully"}
+
+@router.get("/me", response_model=dict)
+def get_current_user(db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
+    user_repository = SQLAlchemyUserRepository(db)
+    user = user_repository.find_by_id(user_id)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+
+    return {
+        "user_id": user.id,
+        "username": user.username,
+        "email": user.email
+    }
+
+@router.post("/logout", response_model=dict)
+def logout(response: Response):
+    # Eliminar la cookie del access_token
+    response.delete_cookie(key="access_token")
+    return {"message": "Logout successful"}
