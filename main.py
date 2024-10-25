@@ -1,44 +1,3 @@
-"""from fastapi import FastAPI
-app = FastAPI()
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}"""
-from datetime import datetime
-import asyncio
-
-
-"""from auth.domain.entities import User
-from auth.domain.value_objects import Email
-from auth.infrastructure.persistence.database import init_db, SessionLocal
-from auth.infrastructure.repositories.user_repository import SQLAlchemyUserRepository
-
-
-def main():
-    init_db()
-    session = SessionLocal()
-    try:
-        user_repository = SQLAlchemyUserRepository(session)
-
-        new_user = User(
-            id = None,
-            username="testuser",
-            email="testuser@example.com",
-            password="hashedpassword123",
-            role="basic"
-        )
-
-        user_repository.create(new_user)
-        user = user_repository.find_by_email(Email("testuser@example.com"))
-        print(f"Usuario encontrado: {user}")
-    finally:
-        session.close()
-
-
-if __name__ == '__main__':
-    main()"""
 from fastapi import FastAPI
 from auth.interfaces.http.auth_controller import router as auth_router
 from challenge.interfaces.rest.challenge_controller import router as challenge_router
@@ -47,7 +6,16 @@ from competition.interfaces.rest.competition_controller import router as competi
 from feedback.interfaces.rest.feedback_controller import router as feedback_controller_router
 from user_profile.interfaces.http.user_profile_controller import router as profile_controller_router
 from cs_statistics.interfaces.rest.statistics_controller import router as statistics_controller_router
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Dominios permitidos
+    allow_credentials=True,
+    allow_methods=["*"],  # Métodos permitidos (GET, POST, PUT, DELETE, etc.)
+    allow_headers=["*"],  # Encabezados permitidos
+)
 
 # Incluir las rutas de autenticación en la aplicación
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
