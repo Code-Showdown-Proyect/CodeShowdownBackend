@@ -4,11 +4,13 @@ from typing import Optional
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from fastapi import HTTPException, status
+from dotenv import load_dotenv
 
+load_dotenv()
 # Cargar configuración desde las variables de entorno
-SECRET_KEY = os.getenv("SECRET_KEY", "ccd069ebb51b5d11dfff860e4ee1c7630945a45432771abd58e0f6f1c40968df")
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 # Contexto para el hash de las contraseñas
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

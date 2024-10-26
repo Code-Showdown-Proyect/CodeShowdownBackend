@@ -1,8 +1,13 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from dotenv import load_dotenv
+
+# Cargar las variables del archivo .env
+load_dotenv()
 
 # Datos de conexión a PostgreSQL
-DATABASE_URL = "postgresql://avnadmin:AVNS_2MSqoAieULPkP2Kkg0J@cd-sd-skrak-34ad.b.aivencloud.com:28424/defaultdb"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Crear el motor de SQLAlchemy
 engine = create_engine(DATABASE_URL, echo=True)
