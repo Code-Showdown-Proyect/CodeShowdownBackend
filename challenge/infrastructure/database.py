@@ -1,10 +1,13 @@
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 
-# Configuración para conectarse a la base de datos PostgreSQL (se debe configurar en las variables de entorno)
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://avnadmin:AVNS_2MSqoAieULPkP2Kkg0J@cd-sd-skrak-34ad.b.aivencloud.com:28424/defaultdb")
+load_dotenv()
+
+# Datos de conexión a PostgreSQL
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Crear el motor de conexión para PostgreSQL
 engine = create_engine(DATABASE_URL, echo=True)

@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
@@ -6,9 +7,10 @@ import os
 # Base declarativa para definir nuestros modelos de SQLAlchemy
 Base = declarative_base()
 
-# URL de conexión a la base de datos PostgreSQL (leer desde variables de entorno)
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://avnadmin:AVNS_2MSqoAieULPkP2Kkg0J@cd-sd-skrak-34ad.b.aivencloud.com:28424/defaultdb")
+load_dotenv()
 
+# Datos de conexión a PostgreSQL
+DATABASE_URL = os.getenv("DATABASE_URL")
 # Crear el motor de SQLAlchemy
 engine = create_engine(DATABASE_URL, pool_size=10, max_overflow=20, echo=True)
 

@@ -2,50 +2,60 @@ import openai
 import os
 import re
 
+from dotenv import load_dotenv
+
 
 class ChatGPTClient:
     def __init__(self):
-        # Configuración inicial con la API key
+        load_dotenv()
         openai.api_key = os.getenv("OPENAI_API_KEY")
 
-    def generate_feedback(self, answer: str) -> str:
+    def generate_feedback(self, answer: str, question: str) -> dict:
         if not answer.strip():
             # Caso en el que no se envió respuesta
-            return "No se proporcionó ninguna respuesta. Recuerda que participar y enviar tu solución es importante para recibir retroalimentación."
-
-        # Mensaje para generar retroalimentación del código enviado por el usuario
-        prompt = (f"Evalúa el siguiente código y proporciona un feedback detallado para mejorarlo: {answer}\nIncluye refactorizaciones y mejores prácticas de Python, además de evaluar si la solución es correcta, "
-                  f"en caso sea correcta, procura incluir palabras como correcto, bien hecho, solución valida, resolución correcta.")
+            feedback =  "No se proporcionó ninguna respuesta. Recuerda que participar y enviar tu solución es importante para recibir retroalimentación."
+            return {"feedback": feedback, "score": 0, "conclusion": ""}
+        print("respuesta enviada: ", answer)
+        print("pregunta enviada: ", question)
+        prompt = (f"Evalúa el siguiente código enviado como respuesta al desafío de Python: {answer}\n"
+                  f"Basado en la pregunta: {question}, proporciona un análisis detallado.\n"
+                  "Si el código es correcto, concluye con 'Conclusion: Problema resuelto correctamente'. Si es incorrecto, utiliza 'Conclusion:' seguido de una explicación breve del error y añade una puntuación con el prefijo 'Score:' y el valor correspondiente de 1 a 100.\n"
+                  "Si no se detecta código Python, indica que no se proporcionó una respuesta válida y agrega 'Conclusion:' y 'Score' con un puntaje de 0.\n"
+                  "El feedback debe ser conciso, sin frases como 'Respuesta generada por el modelo', y no debe exceder los 400 tokens. Siempre incluye 'Conclusion:' y 'Score:' sin símbolos adicionales.")
         messages = [
             {"role": "system", "content": "Eres un experto en Python y en la evaluación de código."},
             {"role": "user", "content": prompt}
         ]
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
+        response = openai.chat.completions.create(
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=400,
             temperature=0.7
         )
-
-        # Imprimir la respuesta generada para propósitos de depuración
-        print("Respuesta generada por el modelo:\n", response.choices[0].message.content)
-
-        # Extraer la retroalimentación generada por el modelo
+        #print("Respuesta generada por el modelo:\n", response.choices[0].message.content)
         feedback = response.choices[0].message.content.strip()
+        print("Respuesta generada por el modelo:\n", feedback)
 
-        return feedback
+        #feedback ="Respuesta generada por el modelo: El texto proporcionado parece no ser código Python, sino una serie de caracteres aleatorios. Por lo tanto, no hay ningún código que evaluar. Conclusion: No se proporcionó ninguna respuesta. Score: 5"
+
+        score = int(re.search(r'Score:\s*(\d+)', feedback).group(1)) if re.search(r'Score:\s*(\d+)', feedback) else 0
+        conclusion_match = re.search(r'Conclusion:\s*(.*?)(?:\s*Score:|\s*$)', feedback) or re.search(
+            r'Conclusión:\s*(.*?)(?:\s*Score:|\s*$)', feedback)
+        conclusion = conclusion_match.group(1).strip() if conclusion_match else ""
+
+        print("score: ", score)
+        print("conclusion: ", conclusion)
+
+        # Limpiar el feedback de las secciones "Score" y "Conclusion"
+        feedback_cleaned = re.sub(r'(Score:\s*\d+|Conclusion:.*|Conclusión:.*)', '', feedback).strip()
+        print("feedback_cleaned: ", feedback_cleaned)
+        return {"feedback": feedback_cleaned, "score": score, "conclusion": conclusion}
 
     def determine_correctness(self, feedback: str) -> (bool, str):
-        """
-        Determina si la respuesta proporcionada es correcta en base al contenido del feedback.
-        Retorna un valor booleano y un mensaje que explique la evaluación.
-        """
-        # Evaluar si la respuesta fue correcta con base en las frases encontradas en el feedback.
         correctness_indicators = ["correcto", "bien hecho", "solución válida", "resolución correcta"]
         if any(indicator in feedback.lower() for indicator in correctness_indicators):
             return True, "La respuesta es correcta. ¡Buen trabajo!"
 
-        # En caso de que la respuesta no sea correcta, generar un mensaje adicional
         return False, "La respuesta no es correcta. Revisa las siguientes recomendaciones para mejorar tu solución."
 
     def provide_suggestions(self, feedback: str) -> str:

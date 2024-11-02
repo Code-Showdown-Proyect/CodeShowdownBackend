@@ -1,7 +1,9 @@
 import json
+import os
 from http.client import HTTPException
 
 import httpx
+from dotenv import load_dotenv
 from fastapi import WebSocket, WebSocketDisconnect, Depends, APIRouter
 from starlette import status
 
@@ -15,8 +17,10 @@ from competition.security.authorization import get_current_user, get_current_use
 
 router = APIRouter()
 manager = ConnectionManager()
+load_dotenv()
 
-FEEDBACK_SERVICE_URL = "http://127.0.0.1:8000/feedback/analyze-response"
+
+FEEDBACK_SERVICE_URL = os.getenv("FEEDBACK_SERVICE_URL")
 
 # Dependency to get the competition service
 def get_competition_service():
